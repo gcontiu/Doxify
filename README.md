@@ -1,9 +1,11 @@
-### To use it
-``` git clone```
+### HowTo
+``` git clone https://github.com/naterivah/helloworld-springboot.git```
 
 ```docker build -t nbittich/helloworld-springboot .``` 
 
 ```docker run -p 8585:8585 -d --name=HelloWorldSpringBootApp nbittich/helloworld-springboot``` 
 
-http://localhost:8585/jean => Hello, World!
-http://localhost:8585/jean => Hello, Jean!
+### Example
+
+ - http://localhost:8585/jean => Hello, World!
+ - http://localhost:8585/jean => Hello, Jean!
