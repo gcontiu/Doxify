@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible">
+    <title>Websocket example</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container pt-3">
+    <h1>Websocket example</h1>
+    <div class="p-2">
+        <div id="app" class="card border-primary bg-light">
+            <div class="card-header">
+                Random WebSocket
+            </div>
+            <div class="card-body" v-if="!started">
+                <p class="card-text lead text-danger">
+                    Click on the Start button first.
+                </p>
+            </div>
+            <div class="card-body" v-if="quote">
+                <blockquote class="blockquote text-center">
+                    <p class="font-weight-light">{{ quote.quote }}</p>
+                    <footer class="blockquote-footer">
+                        {{ quote.author }}
+                    </footer>
+                </blockquote>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-dark" @click="start" v-if="!started">
+                    Start random quotes
+                </button>
+                <button class="btn btn-dark" @click="stop" v-if="started">
+                    Stop random quotes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/websocket-client.js"></script>
+<script>createVueJSApp();</script>
+</body>
+</html>
