@@ -8,18 +8,56 @@
     <title>Websocket example</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-<div class="container pt-3">
+
+<!--CRUD EXAMPLE-->
+<div id="crud-user" class="container p-3">
+    <h1>CRUD example</h1>
+    <table class="table table-striped " v-if="users && users.length">
+        <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="user in users">
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.lastname}}</td>
+            <td>{{user.firstname}}</td>
+            <td>
+                <button class="btn btn-danger" @click="deleteById(user.id)">
+                    delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="lead text-danger" v-if="!users || !users.length">Empty user list</p>
+</div>
+
+<!--WEBSOCKET EXAMPLE-->
+<div class="container pt-2">
     <h1>Websocket example</h1>
     <div class="p-2">
-        <div id="app" class="card border-primary bg-light">
+        <div id="quote-app" class="card border-primary bg-light">
             <div class="card-header">
                 Random WebSocket
             </div>
             <div class="card-body" v-if="!started">
                 <p class="card-text lead text-danger">
                     Click on the Start button first.
+                </p>
+            </div>
+            <div class="card-body" v-if="!quote && started">
+                <p class="card-text lead text-warning">
+                    loading...
                 </p>
             </div>
             <div class="card-body" v-if="quote">
@@ -41,11 +79,13 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+<!--SCRIPTS-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/crud-user.js"></script>
 <script src="js/websocket-client.js"></script>
-<script>createVueJSApp();</script>
+
 </body>
 </html>

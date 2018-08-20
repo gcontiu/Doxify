@@ -2,7 +2,6 @@ package com.helloworld.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,20 +9,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.Arrays.asList;
 
 @Service
 public class QuoteService {
     private static final Resource QUOTE_FEED = new ClassPathResource("quote.json");
-    private final List<WebSocketSession> sessions = new ArrayList<>();
+    private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
     private final ObjectMapper objectMapper;
 
-    @Autowired
+    @Inject
     public QuoteService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }

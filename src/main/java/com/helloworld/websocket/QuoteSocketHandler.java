@@ -1,18 +1,18 @@
 package com.helloworld.websocket;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 @Component
 public class QuoteSocketHandler extends TextWebSocketHandler {
 
-    @Autowired
+    @Inject
     private QuoteService quoteService;
 
     @Override
