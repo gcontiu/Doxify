@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible">
-    <title>Websocket example</title>
+    <title>Java / Spring example</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -15,7 +15,15 @@
 <!--CRUD EXAMPLE-->
 <div id="crud-user" class="container p-3">
     <h1>CRUD example</h1>
-    <table class="table table-striped " v-if="users && users.length">
+
+    <!--Add button-->
+    <div class="p-1">
+        <button type="button" class="btn btn-primary btn-lg" @click="showTableRowAddOrEdit({})">
+            Add a new user
+        </button>
+    </div>
+    <!-- Table -->
+    <table class="table table-striped">
         <thead class="thead-dark">
         <tr>
             <th>#</th>
@@ -26,20 +34,53 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="user in users">
+
+        <!-- List of users -->
+        <tr v-for="user in users" v-if="users">
             <td>{{user.id}}</td>
             <td>{{user.username}}</td>
             <td>{{user.lastname}}</td>
             <td>{{user.firstname}}</td>
             <td>
-                <button class="btn btn-danger" @click="deleteById(user.id)">
-                    delete
+                <div class="btn-group" role="group" aria-label="actions" v-if="!actionsLocked">
+                    <button type="button" class="btn btn-danger" @click="deleteById(user.id)">
+                        delete
+                    </button>
+
+                    <button type="button" class="btn btn-warning" @click="showTableRowAddOrEdit(user)">
+                        edit
+                    </button>
+                </div>
+            </td>
+        </tr>
+
+        <!-- Input form -->
+        <tr class="table-success" v-if="userToEditOrAdd">
+            <td></td>
+            <td>
+                <input type="text" v-model="userToEditOrAdd.username" placeholder="username">
+            </td>
+            <td>
+                <input type="text" v-model="userToEditOrAdd.lastname" placeholder="lastname">
+            </td>
+            <td>
+                <input type="text" v-model="userToEditOrAdd.firstname" placeholder="firstname">
+            </td>
+            <td>
+                <button class="btn btn-info" @click="addOrUpdate">
+                    save
                 </button>
             </td>
         </tr>
+
+        <!-- If empty list of users -->
+        <tr class="table-info" v-if="!users || !users.length">
+            <td colspan="5">Empty user list</td>
+        </tr>
+
         </tbody>
     </table>
-    <p class="lead text-danger" v-if="!users || !users.length">Empty user list</p>
+
 </div>
 
 <!--WEBSOCKET EXAMPLE-->

@@ -8,19 +8,23 @@ $(function () {
         el: '#crud-user',
         data: function () {
             return {
-                users: null
+                users: null,
+                actionsLocked: false,
+                userToEditOrAdd: null
             }
         },
         mounted: function () {
             console.log('mounted');
-            this.loadUsers();
+            this.reloadTableUsers();
         },
         methods: {
-            loadUsers: function () {
+            reloadTableUsers: function () {
                 var url = serverUrl + '/user/all';
                 var that = this;
                 $.get(url, function (data) {
                     that.users = data.content; // todo add pagination/sort support
+                    that.userToEditOrAdd = null;
+                    that.actionsLocked = false;
                 });
             },
             deleteById: function (id) {
@@ -28,11 +32,27 @@ $(function () {
                 var that = this;
                 $.post(url, function (data) {
                     alert('User deleted');
-                    that.loadUsers();
-                })
+                    that.reloadTableUsers();
+                });
             },
-            addOrupdate: function (user) {
-                console.log('update ', user); // todo
+            showTableRowAddOrEdit: function (user) {
+                this.actionsLocked = true;
+                this.userToEditOrAdd = user;
+            },
+            addOrUpdate: function () {
+                var url = serverUrl + '/user/create-or-update';
+                var that = this;
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json", // send as JSON
+                    data: JSON.stringify(this.userToEditOrAdd),
+                    success: function (data) {
+                        alert('User added or updated');
+                        that.reloadTableUsers();
+                    }
+                });
             }
         }
     });
