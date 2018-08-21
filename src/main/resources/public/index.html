@@ -16,12 +16,24 @@
 <div id="crud-user" class="container p-3">
     <h1>CRUD example</h1>
 
-    <!--Add button-->
-    <div class="p-1">
-        <button type="button" class="btn btn-primary btn-lg" @click="showTableRowAddOrEdit({})">
-            Add a new user
-        </button>
+    <!--Add & search button-->
+    <div class="p-2" v-if="!actionsLocked">
+        <div class="input-group">
+            <a type="button" class="btn btn-primary btn-lg m-2" @click="showTableRowAddOrEdit({})">
+                Add a new user
+            </a>
+            <input class="form-control py-2 border-right-0 border"
+                   type="search"
+                   placeholder="Search by username then push enter"
+                   v-model="searchKeyword"
+                   @keyup.enter="search">
+            <div class="input-group-append">
+                <div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
+            </div>
+        </div>
     </div>
+
+
     <!-- Table -->
     <table class="table table-striped">
         <thead class="thead-dark">
@@ -75,7 +87,7 @@
 
         <!-- If empty list of users -->
         <tr class="table-info" v-if="!users || !users.length">
-            <td colspan="5">Empty user list</td>
+            <td colspan="5">User(s) not found</td>
         </tr>
 
         </tbody>

@@ -6,8 +6,8 @@
 ```docker run -p 8585:8585 -d --name=HelloWorldSpringBootApp nbittich/helloworld-springboot``` 
 
 ### Cloc
-- Java: 188 lines of code
-- Javascript: 144 lines of code
+- Java: 195 lines of code
+- Javascript: 152 lines of code
 
 ### Example
  - http://localhost:8585/ 

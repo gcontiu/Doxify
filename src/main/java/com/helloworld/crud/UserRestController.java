@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -20,6 +21,11 @@ public class UserRestController {
     @GetMapping("/all")
     public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+
+    @GetMapping("/find-by-username-containing")
+    public List<User> findByUsernameContaining(@RequestParam("key") String keyword) {
+        return userRepository.findUsersByUsernameContaining(keyword);
     }
 
     @PostMapping("/create-or-update")

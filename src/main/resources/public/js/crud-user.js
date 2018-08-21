@@ -10,7 +10,8 @@ $(function () {
             return {
                 users: null,
                 actionsLocked: false,
-                userToEditOrAdd: null
+                userToEditOrAdd: null,
+                searchKeyword: null
             }
         },
         mounted: function () {
@@ -25,6 +26,13 @@ $(function () {
                     that.users = data.content; // todo add pagination/sort support
                     that.userToEditOrAdd = null;
                     that.actionsLocked = false;
+                });
+            },
+            search: function () {
+                var url = serverUrl + '/user/find-by-username-containing';
+                var that = this;
+                $.get(url, {key: this.searchKeyword}, function (data) {
+                    that.users = data;
                 });
             },
             deleteById: function (id) {
