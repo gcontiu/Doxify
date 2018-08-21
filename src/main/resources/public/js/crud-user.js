@@ -25,6 +25,7 @@ $(function () {
                 $.get(url, function (data) {
                     that.users = data.content; // todo add pagination/sort support
                     that.userToEditOrAdd = null;
+                    that.searchKeyword = null;
                     that.actionsLocked = false;
                 });
             },
