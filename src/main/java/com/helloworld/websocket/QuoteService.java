@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -34,7 +33,6 @@ public class QuoteService {
         this.objectMapper = objectMapper;
         // initialize list of quotes
         this.listOfQuotes = asList(objectMapper.readValue(QUOTE_FEED.getInputStream(), Quote[].class));
-
     }
 
     /**
