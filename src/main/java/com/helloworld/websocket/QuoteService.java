@@ -10,22 +10,31 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
 @Service
 public class QuoteService {
-    private static final Resource QUOTE_FEED = new ClassPathResource("quote.json");
+
+    private  static final Resource QUOTE_FEED = new ClassPathResource("quote.json");
+
+    private final List<Quote> listOfQuotes;
+
     private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
     private final ObjectMapper objectMapper;
 
     @Inject
-    public QuoteService(ObjectMapper objectMapper) {
+    public QuoteService(ObjectMapper objectMapper) throws IOException {
         this.objectMapper = objectMapper;
+        // initialize list of quotes
+        this.listOfQuotes = asList(objectMapper.readValue(QUOTE_FEED.getInputStream(), Quote[].class));
+
     }
 
     /**
@@ -38,11 +47,10 @@ public class QuoteService {
 
     @SneakyThrows
     private String randomQuote() {
-        List<Quote> quotes = asList(objectMapper.readValue(QUOTE_FEED.getInputStream(), Quote[].class));
-        Collections.shuffle(quotes);
-        Quote quote = quotes.parallelStream()
-                .findFirst()
-                .orElse(Quote.builder().build());
+        Collections.shuffle(listOfQuotes);
+        Quote quote = listOfQuotes.stream()
+                .findAny()
+                .orElseGet(() -> Quote.builder().build());
         return objectMapper.writeValueAsString(quote);
     }
 
