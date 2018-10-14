@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Find user by its username. The framework automatically generates
      * the implementation using the name of the method.
-     *
+     * c
      * @param username
      * @return
      */
