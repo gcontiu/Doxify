@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserRestController {
     private final UserRepository userRepository;
 
@@ -37,6 +38,11 @@ public class UserRestController {
     public ResponseEntity<String> delete(@RequestParam("id") Long id) {
         userRepository.deleteById(id);
         return ResponseEntity.ok("user removed from db");
+    }
+
+    @PostMapping("/timeSpentOnPage")
+    public void test (@RequestBody String timeSpent) {
+        System.out.println("Time spent on page: " + timeSpent);
     }
 
 }
