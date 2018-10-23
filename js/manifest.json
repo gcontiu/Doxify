@@ -1,23 +1,19 @@
 {
 
   "manifest_version": 2,
-  "name": "Borderify",
+  "name": "measureTimeSpent",
   "version": "1.0",
 
-  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "description": "Measure time spent on specific we pages",
 
   "permissions": [
-    "http://localhost:8585/url/withId"
+    "<all_urls>"
   ],
-
-  "icons": {
-    "48": "icons/border-48.png"
-  },
 
   "content_scripts": [
     {
-      "matches": ["*://*.mozilla.org/*"],
-      "js": ["borderify.js"]
+      "matches": ["*://wiki.dev.worldpay.com/*"],
+      "js": ["measureTimeSpentOnPage.js"]
     }
   ]
 
