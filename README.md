@@ -1,5 +1,5 @@
 ### How To
-``` git clone https://github.com/naterivah/helloworld-springboot.git```
+``` https://github.com/gcontiu/helloworld-springboot.git```
 
 ```docker build -t nbittich/helloworld-springboot helloworld-springboot``` 
 
