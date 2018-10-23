@@ -13,6 +13,6 @@
  - http://localhost:8585/ 
     - Websocket example: Random quote pushed from the server
     - CRUD example
- - http://localhost:8585/greeting/jean => Hello, team!
+ - http://localhost:8585/greeting/jean => Hello, jean!
 
 
