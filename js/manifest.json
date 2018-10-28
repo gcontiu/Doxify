@@ -12,8 +12,8 @@
 
   "content_scripts": [
     {
-      "matches": ["*://wiki.dev.worldpay.com/*"],
-      "js": ["measureTimeSpentOnPage.js"]
+      "matches": ["*://en.wikipedia.org/*"],
+      "js": ["timeme.js"]
     }
   ]
 
