@@ -12,7 +12,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://en.wikipedia.org/*"],
+      "matches": ["*://weblog.endava.com/*"],
       "js": ["timeme.js"]
     }
   ]

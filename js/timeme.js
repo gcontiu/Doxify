@@ -418,10 +418,33 @@ window.addEventListener('unload', function(event) {
     var data = {};
     data ["spentTime"] = end - start;
     data ["url"] = document.URL;
-    var url = "http://localhost:8585/user/timeSpentOnPage";
-    callAjax(url, data);
+    
+    var author = null;
+    var user = null;
+    var authorname = null;
+    var username = null;
+    
+    var authors = document.querySelectorAll("a[rel*='author']");
+    if (authors != null && authors.length == 1) {
+    	author = authors[0].href.substr(42);
+    	author = author.substr(0,author.length-1);
+    	data ["author"] = author;
+      
+    	user = document.querySelector("span.username").textContent;
+    	authorname = document.querySelector("a[rel*='author']").textContent;
+    	username = document.querySelector("span.display-name").textContent;
+    
+    	if (username != null && authorname != null && username != authorname) {
+    		data ["authorname"] = authorname;
+    		data ["user"] = user;
+    		data ["username"] = username;
+ 
+    		var url = "http://localhost:8585/user/timeSpentOnPage";
+    		callAjax(url, data);
+    	}	
+    }	
+    
     console.log( end - start);
-
 });
 
 function callAjax(url, data){
