@@ -56,9 +56,7 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.0</version>
         </dependency>
-
         <!-- blockchain -->
-
         <dependency>
             <groupId>org.web3j</groupId>
             <artifactId>core</artifactId>
@@ -69,11 +67,6 @@
             <groupId>org.web3j</groupId>
             <artifactId>abi</artifactId>
             <version>3.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.5</version>
         </dependency>
     </dependencies>
 

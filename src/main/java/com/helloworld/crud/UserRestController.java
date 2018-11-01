@@ -1,5 +1,7 @@
 package com.helloworld.crud;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,9 @@ import java.util.List;
 @RequestMapping("/user")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserRestController {
+
+    public static final Logger LOG = LoggerFactory.getLogger(UserRestController.class);
+
     private final UserRepository userRepository;
 
     @Inject
@@ -42,7 +47,7 @@ public class UserRestController {
 
     @PostMapping("/timeSpentOnPage")
     public void test (@RequestBody String timeSpent) {
-        System.out.println("Time spent on page: " + timeSpent);
+        LOG.info("Time spent on page: " + timeSpent);
     }
 
 }
