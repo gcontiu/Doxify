@@ -422,27 +422,15 @@ window.addEventListener('unload', function(event) {
     data ["spentTime"] = end - start;
     data ["url"] = document.URL;
     
-    var author = null;
-    var user = null;
-    var authorname = null;
-    var username = null;
-    var content = null;
-    
-    var authors = document.querySelectorAll("a[rel*='author']");
-    if (authors != null && authors.length == 1) {
-    	author = authors[0].href.substr(42);
-    	author = author.substr(0,author.length-1);
-    	data ["author"] = author;
-      
-    	user = document.querySelector("span.username").textContent;
-    	authorname = document.querySelector("a[rel*='author']").textContent;
-    	username = document.querySelector("span.display-name").textContent;
-    	content = document.getElementById("content-core");
+    if (collectAuthorAndUser()){
+		
+		var content = null;
+       	content = document.getElementById("content-core");
 
-    	if (username != null && authorname != null && username != authorname && validateContent(content)) {
-    		data ["authorname"] = authorname;
-    		data ["user"] = user;
-    		data ["username"] = username;
+    	if (validateContent(content)) {
+    			
+			collectComments();
+			
     		var url = "http://localhost:8585/user/timeSpentOnPage";
     		callAjax(url, data);
     	}	
@@ -483,8 +471,48 @@ function analyzeContent(pageContent){
     var words = pageContent.split(/\b\S+\b/g).length;
     var stats = [charLength, words, lines];
     data["stats"] = stats;
+}
 
+function collectAuthorAndUser(){
+	 
+    var author = null;
+    var user = null;
+    var authorname = null;
+    var username = null;
+	var collected = false;
+       
+    var authors = document.querySelectorAll("a[rel*='author']");
+    if (authors != null && authors.length == 1) {
+    	author = authors[0].href.substr(42);
+    	author = author.substr(0,author.length-1);
+    	data ["author"] = author;
+      
+    	user = document.querySelector("span.username").textContent;
+    	authorname = document.querySelector("a[rel*='author']").textContent;
+    	username = document.querySelector("span.display-name").textContent;
+  
+    	if (username != null && authorname != null && username != authorname) {
+    		data ["authorname"] = authorname;
+    		data ["user"] = user;
+    		data ["username"] = username;
+			collected = true;
+		}
+	}
+	return collected;
+}
 
+function collectComments(){
+	var comments = document.querySelectorAll("a.url");
+
+	if (comments != null){
+		data["comments number"] = comments.length;
+		for (var i=0; i< comments.length; i++){
+			var comentauthor = comments[i].textContent;
+			var commentuser = comments[i].href.substr(34);
+			commentuser = commentuser.substr(0,commentuser.length-1);
+			data["commenter "+(i+1)] = [comentauthor,commentuser];
+		}
+	}
 }
 
 TimeMe.initialize({
