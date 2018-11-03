@@ -13,7 +13,7 @@
   "content_scripts": [
     {
       "matches": ["*://weblog.endava.com/*"],
-      "js": ["timeme.js"]
+      "js": ["timeme.js","handler.js"]
     }
   ]
 
