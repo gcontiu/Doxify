@@ -416,7 +416,7 @@ var blackListedArticles = ["*scrum of scrum*", "*tech alignment*"];
 
 
 window.addEventListener('unload', function(event) {
-    TimeMe.initialize()
+console.log("Our UNLOAD event listener fired!")
     var end = new Date();
 
     data ["spentTime"] = end - start;
@@ -436,13 +436,13 @@ window.addEventListener('unload', function(event) {
     	}	
     }	
     
-    console.log( end - start);
+    console.log("basic Measurement: " + ((end - start)/1000) + " s");
 });
 
 function callAjax(url, data){
     TimeMe.stopTimer("my-activity");
     var timeOnActivity = TimeMe.getTimeOnPageInSeconds("my-activity")
-    console.log("timeOnActivity=" + timeOnActivity + " for URL: " + JSON.stringify(data));
+    console.log("TIMEME.JS: "+ timeOnActivity + " s | Title: " + data["title"] + " | Author: " + data["author"] );
 
     var xmlhttp;
     xmlhttp = new XMLHttpRequest();
@@ -516,6 +516,9 @@ function collectComments(){
 }
 
 TimeMe.initialize({
+
     currentPageName: "my-home-page", // current page
-    idleTimeoutInSeconds: 30 // seconds
+
+    // the timer will stop if there is no action after this ammount of seconds (5s good fir demo)
+    idleTimeoutInSeconds: 5 // seconds
 });
