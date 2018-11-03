@@ -415,8 +415,9 @@ var data = {};
 var blackListedArticles = ["*scrum of scrum*", "*tech alignment*"];
 
 
+// this is fired for closing the tab or window
 window.addEventListener('unload', function(event) {
-console.log("Our UNLOAD event listener fired!")
+    console.log("Our UNLOAD event listener fired!")
     var end = new Date();
 
     data ["spentTime"] = end - start;
