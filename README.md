@@ -15,4 +15,5 @@
     - CRUD example
  - http://localhost:8585/greeting/jean => Hello, jean!
 
-
+### Access Main Dashboard
+ - http://localhost:8585/dashboard.html

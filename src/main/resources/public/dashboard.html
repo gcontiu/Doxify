@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Statistics</title>
+</head>
+<body style="background-color: #eee;">
+
+<main role="main" class="container justify-content-center">
+    <!-- Carousel -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="img/Quotefancy-21051-3840x2160.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="img/Quotefancy-21531-3840x2160.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="img/Quotefancy-1700728-3840x2160.jpg" alt="Third slide">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
+    <!-- General Statistics Section -->
+    <hr>
+    <h2>
+        General Statistics
+        <small class="text-muted">Best of Articles, Contributors, Average time and Top Points</small>
+    </h2>
+    <div class="card-group">
+        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header text-uppercase text-center">contributors</div>
+            <div class="card-body">
+                <h5 class="card-title text-center text-center">Number of Contributors</h5>
+                <p class="card-text text-center">30</p>
+            </div>
+        </div>
+
+        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+            <div class="card-header text-uppercase text-center">articles</div>
+            <div class="card-body">
+                <h5 class="card-title text-center">Number of Articles</h5>
+                <p class="card-text text-center">100</p>
+            </div>
+        </div>
+
+        <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+            <div class="card-header text-uppercase text-center">average time (m)</div>
+            <div class="card-body">
+                <h5 class="card-title text-center">Average Time spent on Article</h5>
+                <p class="card-text text-center">15</p>
+            </div>
+        </div>
+
+        <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+            <div class="card-header text-uppercase text-center">top points</div>
+            <div class="card-body">
+                <h5 class="card-title text-center">Peek Points Achieved</h5>
+                <p class="card-text text-center">50</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ranking Section -->
+    <hr>
+    <h2>
+        Ranking
+        <small class="text-muted">Top Users</small>
+    </h2>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Contributor</th>
+            <th scope="col">Points Achieved</th>
+            <th scope="col">Most Read Article</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Andreea Ilea</td>
+            <td>50</td>
+            <td><a href="https://weblog.endava.com/worldpay/2018/09/20/futurepay-overview/">FUTUREPAY OVERVIEW</a>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Madalin Ilie</td>
+            <td>40</td>
+            <td>
+                <a href="https://weblog.endava.com/worldpay/2015/08/28/branching-strategy-for-the-new-dba-qa-process/">BRANCHING
+                    STRATEGY FOR THE NEW DBA QA PROCESS</a></td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Samuel Szabo-Sinka</td>
+            <td>30</td>
+            <td><a href="https://weblog.endava.com/worldpay/2018/10/30/charging-back-a-payment/">CHARGING BACK A
+                PAYMENT</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-primary" role="banner">
+        Other Categories
+    </div>
+
+    <!-- User Section -->
+    <hr>
+    <h2>
+        Statistics for your user
+        <small class="text-muted">Enter your Username and checkout the statistics on your own work!</small>
+    </h2>
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Enter your username" aria-label="Username"
+               aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Tooltips Section -->
+    <hr>
+    <h3>
+        Tooltips
+        <small class="text-muted">Key elements to think about when writing <b>good</b> documentation</small>
+    </h3>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ruleNo1">
+        Rule no. 1
+    </button>
+
+    <div class="modal fade" id="ruleNo1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info font-weight-bold" id="titleLabel1">Documentation is like
+                        code: it needs to be
+                        maintained</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>&#8226; Favor quality over quantity</p>
+                    <hr>
+                    <p>&#8226; All examples in the documentation should run automatically</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ruleNo2">
+        Rule no. 2
+    </button>
+
+    <div class="modal fade" id="ruleNo2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info font-weight-bold" id="titleLabel2">If it's not documented, it does
+                        not exist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>&#8226; Write documentation as you write code</p>
+                    <hr>
+                    <p>&#8226; Documentation driven development</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ruleNo3">
+        Rule no. 3
+    </button>
+
+    <div class="modal fade" id="ruleNo3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info font-weight-bold" id="titleLabel3">Documentation is about
+                        communication</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>&#8226; Who is your audience?</p>
+                    <hr>
+                    <p>&#8226; How to organize your ideas?</p>
+                    <hr>
+                    <p>&#8226; Visual communication</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+<footer class="footer text-center">
+    <div class="container">
+        <span class="text-muted">Endava Hackathon © 2018</span>
+    </div>
+</footer>
+</html>
