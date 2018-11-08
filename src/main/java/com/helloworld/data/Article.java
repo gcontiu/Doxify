@@ -5,14 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 
 @Entity
 public class Article {
@@ -27,24 +20,27 @@ public class Article {
     private Author author;
 
     @Column(unique = true, nullable = false)
-    private String name;
+    private String title;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @Column(nullable = false)
+    private boolean isBlackListed;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private List<ReadAction> readActions;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ArticleReadAction> articleReadActions;
 
 
     //default constructor needed by JPA and Hibernate
     public Article() {
     }
 
-    public Article(String name, Author author) {
-        this.name = name;
+    public Article(String title, Author author) {
+        this.title = title;
         this.author = author;
         comments = new ArrayList<>();
-        readActions = new ArrayList<>();
+        articleReadActions = new ArrayList<>();
     }
 
 
@@ -52,7 +48,7 @@ public class Article {
         comments.add(comment);
     }
 
-    public void addReadAction(ReadAction readAction) {
-        readActions.add(readAction);
+    public void addReadAction(ArticleReadAction articleReadAction) {
+        articleReadActions.add(articleReadAction);
     }
 }

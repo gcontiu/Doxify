@@ -2,24 +2,26 @@ package com.helloworld.data;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-public class Reward {
+public class ArticleReadAction {
 
     @Id
     @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
-    private ReadAction readAction;
+    private Article article;
+
+    @Column(nullable = false)
+    private Date timeStamp;
+
+    @Column(nullable = false)
+    private Integer secondsSpent;
 
     @Column(nullable = false)
     private Float nrOfCoins;

@@ -6,5 +6,5 @@ import com.helloworld.data.Article;
 
 public interface ArticleRepository extends CrudRepository<Article, String> {
 
-    Article findByName(String name);
+    Article findByTitle(String title);
 }

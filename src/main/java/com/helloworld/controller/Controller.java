@@ -42,9 +42,9 @@ public class Controller {
 
     @PostMapping(value = "/article")
     public ResponseEntity saveArticle(@RequestBody ArticleDTO articleDTO) {
-        LOGGER.info("Saving new article named '{}' from user '{}'...", articleDTO.articleName, articleDTO.authorUserName);
+        LOGGER.info("Saving new article named '{}' from user '{}'...", articleDTO.title, articleDTO.authorUserName);
         Author author = authorRepository.findByUserName(articleDTO.authorUserName);
-        author.addArticle(new Article(articleDTO.articleName, author));
+        author.addArticle(new Article(articleDTO.title, author));
         authorRepository.save(author);
         LOGGER.info("Article saved.");
 
@@ -56,7 +56,7 @@ public class Controller {
     public ResponseEntity saveComment(@RequestBody CommentDTO commentDTO) {
         LOGGER.info("Saving new comment to article '{}' from user '{}'...", commentDTO.articleName, commentDTO.authorUserName);
         Author author = authorRepository.findByUserName(commentDTO.authorUserName);
-        Article article = articleRepository.findByName(commentDTO.articleName);
+        Article article = articleRepository.findByTitle(commentDTO.articleName);
         Comment comment = new Comment(author, article);
         author.addComment(comment);
         article.addComment(comment);
