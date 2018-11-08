@@ -23,6 +23,8 @@ public class Author {
     @Column(unique = true, nullable = false)
     private String userName;
 
+    private String fullName;
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Article> articles;
 
