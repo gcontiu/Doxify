@@ -58,4 +58,8 @@ public class Article {
     public void addReadAction(ArticleReadAction articleReadAction) {
         articleReadActions.add(articleReadAction);
     }
+
+    public void setBlackListed(boolean blackListed) {
+        isBlackListed = blackListed;
+    }
 }

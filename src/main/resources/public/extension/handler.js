@@ -22,13 +22,15 @@ window.addEventListener('unload', function(event) {
 
 		var content = document.getElementById("content-core");
 
+        collectComments();
+        var url;
     	if (validateContent(content)) {
-
-			collectComments();
-
-    		var url = "http://localhost:8585/articleReadAction";
-    		callAjax(url, data);
+    		url = "http://localhost:8585/articleReadAction";
     	}
+    	else {
+            url = "http://localhost:8585/blackListedArticle";
+        }
+        callAjax(url, data);
     }
 
 });
@@ -46,15 +48,15 @@ function callAjax(url, data){
 
 function validateContent(content) {
     var title = content.getElementsByClassName("page-title")[0].textContent.toLowerCase();
+    var pageContent = content.getElementsByClassName("entry-content")[0].textContent;
+    data["articleTitle"] = title;
+    analyzeContent(pageContent);
     for(var blackListedElement in blackListedArticles){
         var regex = new RegExp(blackListedElement);
         if(regex.test(title)){
             return false;
         }
     }
-    var pageContent = content.getElementsByClassName("entry-content")[0].textContent;
-    data["articleTitle"] = title;
-    analyzeContent(pageContent);
     return true;
 }
 

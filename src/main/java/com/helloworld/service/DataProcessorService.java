@@ -30,14 +30,22 @@ public class DataProcessorService {
         this.articleReadActionRepository = articleReadActionRepository;
     }
 
-    public void processDocumentDetails(DocumentationDetailsDTO documentationDetailsDTO) {
+    public void processArticleDetails(DocumentationDetailsDTO documentationDetailsDTO) {
 
+        processArticle(documentationDetailsDTO, Boolean.FALSE);
+    }
+
+    public void processBlackListedArticle(DocumentationDetailsDTO documentationDetailsDTO) {
+
+        processArticle(documentationDetailsDTO, Boolean.TRUE);
+    }
+
+    private void processArticle(DocumentationDetailsDTO documentationDetailsDTO, Boolean isBlackListed) {
         Author author = persistAuthor(documentationDetailsDTO);
 
-        Article article = persistArticle(documentationDetailsDTO, author);
+        Article article = persistArticle(documentationDetailsDTO, author, isBlackListed);
 
         persistReadAction(documentationDetailsDTO, article);
-
     }
 
     private void persistReadAction(DocumentationDetailsDTO documentationDetailsDTO, Article article) {
@@ -50,11 +58,12 @@ public class DataProcessorService {
         articleReadActionRepository.save(articleReadAction);
     }
 
-    private Article persistArticle(DocumentationDetailsDTO documentationDetailsDTO, Author author) {
+    private Article persistArticle(DocumentationDetailsDTO documentationDetailsDTO, Author author, boolean isBlackListed) {
         Article article = articleRepository.findByTitle(documentationDetailsDTO.articleTitle);
 
         if (article == null) {
             article = new Article(documentationDetailsDTO.articleTitle, author);
+            article.setBlackListed(isBlackListed);
             articleRepository.save(article);
         }
         return article;
