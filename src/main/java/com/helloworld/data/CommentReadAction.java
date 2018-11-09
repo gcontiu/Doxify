@@ -1,7 +1,13 @@
 package com.helloworld.data;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,10 +24,10 @@ public class CommentReadAction {
     private Comment comment;
 
     @Column(nullable = false)
-    private Date timeStamp;
+    private LocalDateTime timeStamp;
 
     @Column(nullable = false)
-    private Integer secondsSpent;
+    private Float secondsSpent;
 
     @Column(nullable = false)
     private Float nrOfCoins;

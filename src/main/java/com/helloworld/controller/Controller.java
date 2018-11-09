@@ -1,13 +1,5 @@
 package com.helloworld.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.helloworld.data.Article;
 import com.helloworld.data.Author;
 import com.helloworld.data.Comment;
@@ -16,6 +8,13 @@ import com.helloworld.data.dto.AuthorDTO;
 import com.helloworld.data.dto.CommentDTO;
 import com.helloworld.repository.ArticleRepository;
 import com.helloworld.repository.AuthorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Controller {
