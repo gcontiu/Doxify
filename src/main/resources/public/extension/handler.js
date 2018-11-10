@@ -77,7 +77,11 @@ function collectAuthorAndUser(){
 	var collected = false;
 
     var authors = document.querySelectorAll("a[rel*='author']");
+	
+	//collect author only from a post [age and not the main page
     if (authors != null && authors.length == 1) {
+		
+		//extract author user from link
     	author = authors[0].href.substr(42);
     	author = author.substr(0,author.length-1);
     	data ["author"] = author;
@@ -85,7 +89,8 @@ function collectAuthorAndUser(){
     	user = document.querySelector("span.username").textContent;
     	authorname = document.querySelector("a[rel*='author']").textContent;
     	username = document.querySelector("span.display-name").textContent;
-
+		
+		//do not collect data if the logged in user is the same as the autor
     	if (username != null && authorname != null && username != authorname) {
     		data ["authorName"] = authorname;
     		data ["user"] = user;
@@ -98,14 +103,17 @@ function collectAuthorAndUser(){
 
 function collectComments(){
 	var comments = document.querySelectorAll("a.url");
+	var commentsContent = document.querySelectorAll("div.comment-content");
 
 	if (comments != null){
 		data["comments number"] = comments.length;
-		for (var i=0; i< comments.length; i++){
-			var comentauthor = comments[i].textContent;
-			var commentuser = comments[i].href.substr(34);
-			commentuser = commentuser.substr(0,commentuser.length-1);
-			data["commenter "+(i+1)] = [comentauthor,commentuser];
+		for (var i = 0; i < comments.length; i++){
+			var commentAuthor = comments[i].textContent;
+			var commentContent = commentsContent[i].textContent;
+			var commentUser = comments[i].href.substr(34);
+			//extract user from link
+			commentUser = commentUser.substr(0,commentUser.length-1);
+			data["commenter "+(i+1)] = [commentAuthor,commentUser,commentContent];
 		}
 	}
 }
