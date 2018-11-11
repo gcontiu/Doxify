@@ -113,9 +113,28 @@ function collectComments(){
 			var commentUser = comments[i].href.substr(34);
 			//extract user from link
 			commentUser = commentUser.substr(0,commentUser.length-1);
-			data["commenter "+(i+1)] = [commentAuthor,commentUser,commentContent];
+			data["commenter "+(i+1)] = [commentAuthor,commentUser,getHashCode(commentContent)];
 		}
 	}
 }
 
-
+// mimics the String hashCode function
+function getHashCode(text) {
+	var hash = 0;
+	if (Array.prototype.reduce) {
+        hash = text.split("").reduce(
+			function(a,b){
+				a = ((a<<5)-a) + b.charCodeAt(0);
+				return a & a
+			},0);
+    } else {
+		// for old browsers
+		if (text.length == 0) return hash;
+		for (i = 0; i < text.length; i++) {
+			var code = text.charCodeAt(i);
+			hash  = ((hash << 5) - hash) + code;
+			hash = hash & hash; // Convert to 32bit integer
+		}
+	}
+	return Math.abs(hash);
+}
