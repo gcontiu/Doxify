@@ -127,6 +127,55 @@
     <div class="alert alert-primary" role="banner">
         Other Categories
     </div>
+    <div class="card-group">
+        <div class="card">
+            <img class="card-img-top" src="img/scrumtoon.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title font-weight-bold">SOS</h5>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Article</th>
+                        <th scope="col">Read Times</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td><a href="https://weblog.endava.com/worldpay/2018/11/09/scrum-of-scrums-12112018/">Scrum of
+                            Scrums 12/11/2018</a></td>
+                        <td>5</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <img class="card-img-top" src="img/scrumtoon2.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title font-weight-bold">Tech Alignment</h5>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Article</th>
+                        <th scope="col">Read Times</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td><a href="https://weblog.endava.com/worldpay/2018/11/02/weekly-tech-alignment-02-11-2018/">Weekly
+                            Tech Alignment 02.11.2018</a></td>
+                        <td>8</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <!-- User Section -->
     <hr>
@@ -136,10 +185,10 @@
     </h2>
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Enter your username" aria-label="Username"
+        <input type="text" id="username" class="form-control" placeholder="Enter your username" aria-label="Username"
                aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button">Checkout</button>
+            <button class="btn btn-outline-secondary" type="button" onclick="getUsername()">Checkout</button>
         </div>
     </div>
 
@@ -246,6 +295,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+<script src="extension/parseUsername.js"></script>
 </body>
 
 <footer class="footer text-center">
