@@ -72,7 +72,7 @@ function collectAuthorAndUser(){
 
     var author = null;
     var user = null;
-    var authorname = null;
+    var authorName = null;
     var username = null;
 	var collected = false;
 
@@ -87,12 +87,12 @@ function collectAuthorAndUser(){
     	data ["author"] = author;
 
     	user = document.querySelector("span.username").textContent;
-    	authorname = document.querySelector("a[rel*='author']").textContent;
+    	authorName = document.querySelector("a[rel*='author']").textContent;
     	username = document.querySelector("span.display-name").textContent;
 		
 		//do not collect data if the logged in user is the same as the autor
-    	if (username != null && authorname != null && username != authorname) {
-    		data ["authorName"] = authorname;
+    	if (username != null && authorName != null && username != authorName) {
+    		data ["authorName"] = authorName;
     		data ["user"] = user;
     		data ["username"] = username;
 			collected = true;
@@ -104,17 +104,25 @@ function collectAuthorAndUser(){
 function collectComments(){
 	var comments = document.querySelectorAll("a.url");
 	var commentsContent = document.querySelectorAll("div.comment-content");
+    var commentList = new Array();
 
 	if (comments != null){
-		data["comments number"] = comments.length;
 		for (var i = 0; i < comments.length; i++){
 			var commentAuthor = comments[i].textContent;
 			var commentContent = commentsContent[i].textContent;
 			var commentUser = comments[i].href.substr(34);
 			//extract user from link
 			commentUser = commentUser.substr(0,commentUser.length-1);
-			data["commenter "+(i+1)] = [commentAuthor,commentUser,getHashCode(commentContent)];
+
+			var commenter = new Object();
+			commenter["author"] = commentAuthor;
+            commenter["user"] = commentUser;
+            commenter["hash"] = getHashCode(commentContent);
+
+            commentList.push(commenter);
 		}
+
+		data ["commentList"] = commentList;
 	}
 }
 

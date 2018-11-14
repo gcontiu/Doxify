@@ -51,18 +51,4 @@ public class Controller {
     }
 
 
-    @PostMapping(value = "/comment")
-    public ResponseEntity saveComment(@RequestBody CommentDTO commentDTO) {
-        LOGGER.info("Saving new comment to article '{}' from user '{}'...", commentDTO.articleName, commentDTO.authorUserName);
-        Author author = authorRepository.findByUserName(commentDTO.authorUserName);
-        Article article = articleRepository.findByTitle(commentDTO.articleName);
-        Comment comment = new Comment(author, article);
-        author.addComment(comment);
-        article.addComment(comment);
-        authorRepository.save(author);
-        articleRepository.save(article);
-        LOGGER.info("Comment saved.");
-
-        return ResponseEntity.ok("Comment saved.");
-    }
 }

@@ -10,4 +10,6 @@ import com.helloworld.data.Comment;
 public interface CommentRepository extends CrudRepository<Comment, Article> {
 
     List<Comment> findAllByArticle(Article article);
+
+    Comment findByContentHash(String contentHash);
 }

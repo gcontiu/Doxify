@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -40,8 +41,14 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Author author, Article article) {
+    public Comment(Author author, Article article, String contentHash) {
         this.author = author;
         this.article = article;
+        this.contentHash = contentHash;
+        commentReadActions = new ArrayList<>();
+    }
+
+    public void addCommentReadAction(CommentReadAction commentReadAction) {
+        commentReadActions.add(commentReadAction);
     }
 }

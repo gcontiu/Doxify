@@ -31,4 +31,21 @@ public class CommentReadAction {
 
     @Column(nullable = false)
     private Float nrOfCoins;
+
+    public CommentReadAction(){
+
+    }
+
+    public CommentReadAction(Comment comment, LocalDateTime timeStamp) {
+        this.comment = comment;
+        this.timeStamp = timeStamp;
+    }
+
+    public void setSecondsSpent(Float secondsSpent) {
+        this.secondsSpent = secondsSpent;
+    }
+
+    public void setNrOfCoins(Float nrOfCoins) {
+        this.nrOfCoins = nrOfCoins;
+    }
 }

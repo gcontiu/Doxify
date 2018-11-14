@@ -4,14 +4,18 @@ package com.helloworld.service;
 import com.helloworld.data.Article;
 import com.helloworld.data.ArticleReadAction;
 import com.helloworld.data.Author;
+import com.helloworld.data.Comment;
+import com.helloworld.data.CommentReadAction;
+import com.helloworld.data.dto.CommentDTO;
 import com.helloworld.data.dto.DocumentationDetailsDTO;
-import com.helloworld.repository.ArticleReadActionRepository;
 import com.helloworld.repository.ArticleRepository;
 import com.helloworld.repository.AuthorRepository;
+import com.helloworld.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class DataProcessorService {
@@ -19,15 +23,15 @@ public class DataProcessorService {
     private final AuthorRepository authorRepository;
     private final ArticleRepository articleRepository;
     private final CoinCalculator coinCalculator;
-    private final ArticleReadActionRepository articleReadActionRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
     public DataProcessorService(AuthorRepository authorRepository, ArticleRepository articleRepository, CoinCalculator coinCalculator,
-                                ArticleReadActionRepository articleReadActionRepository) {
+                                CommentRepository commentRepository) {
         this.authorRepository = authorRepository;
         this.articleRepository = articleRepository;
         this.coinCalculator = coinCalculator;
-        this.articleReadActionRepository = articleReadActionRepository;
+        this.commentRepository = commentRepository;
     }
 
     public void processArticleDetails(DocumentationDetailsDTO documentationDetailsDTO) {
@@ -41,40 +45,60 @@ public class DataProcessorService {
     }
 
     private void processArticle(DocumentationDetailsDTO documentationDetailsDTO, Boolean isBlackListed) {
-        Author author = persistAuthor(documentationDetailsDTO);
+        Author author = persistAuthor(documentationDetailsDTO.author, documentationDetailsDTO.authorName);
 
-        Article article = persistArticle(documentationDetailsDTO, author, isBlackListed);
+        Article article = persistArticle(documentationDetailsDTO.articleTitle, author, isBlackListed);
 
-        persistReadAction(documentationDetailsDTO, article);
+        persistComments(documentationDetailsDTO.commentList, documentationDetailsDTO.spentTimeInSeconds, article);
+
+        persistArticleReadAction(documentationDetailsDTO.nrOfLines, documentationDetailsDTO.spentTimeInSeconds, article);
     }
 
-    private void persistReadAction(DocumentationDetailsDTO documentationDetailsDTO, Article article) {
+    private void persistComments(List<CommentDTO> comments, Float spentTime, Article article) {
+        Float commentCoinValue = coinCalculator.calculateNrOfCoinsForComment();
+        for (CommentDTO commentDTO : comments) {
+            Comment comment = commentRepository.findByContentHash(commentDTO.hash);
+            if (comment == null) {
+                Author commentAuthor = persistAuthor(commentDTO.user, commentDTO.author);
+                comment = new Comment(commentAuthor, article, commentDTO.hash);
+                commentAuthor.addComment(comment);
+                CommentReadAction commentReadAction = new CommentReadAction(comment, LocalDateTime.now());
+                commentReadAction.setNrOfCoins(commentCoinValue);
+                commentReadAction.setSecondsSpent(spentTime);
+                comment.addCommentReadAction(commentReadAction);
+                authorRepository.save(commentAuthor);
+            }
+        }
+    }
+
+    private void persistArticleReadAction(Integer nrOfLines, Float spentTime, Article article) {
         ArticleReadAction articleReadAction = new ArticleReadAction(article, LocalDateTime.now());
 
-        Float nrOfCoins = coinCalculator.calculateNrOfCoinsForArticle(documentationDetailsDTO.nrOfLines, documentationDetailsDTO.spentTimeInSeconds);
+        Float nrOfCoins = coinCalculator.calculateNrOfCoinsForArticle(nrOfLines, spentTime);
 
         articleReadAction.setNrOfCoins(nrOfCoins);
-        articleReadAction.setSecondsSpent(documentationDetailsDTO.spentTimeInSeconds);
-        articleReadActionRepository.save(articleReadAction);
+        articleReadAction.setSecondsSpent(spentTime);
+        article.addReadAction(articleReadAction);
+        articleRepository.save(article);
     }
 
-    private Article persistArticle(DocumentationDetailsDTO documentationDetailsDTO, Author author, boolean isBlackListed) {
-        Article article = articleRepository.findByTitle(documentationDetailsDTO.articleTitle);
+    private Article persistArticle(String articleTitle, Author author, boolean isBlackListed) {
+        Article article = articleRepository.findByTitle(articleTitle);
 
         if (article == null) {
-            article = new Article(documentationDetailsDTO.articleTitle, author);
+            article = new Article(articleTitle, author);
             article.setBlackListed(isBlackListed);
             articleRepository.save(article);
         }
         return article;
     }
 
-    private Author persistAuthor(DocumentationDetailsDTO documentationDetailsDTO) {
-        Author author = authorRepository.findByUserName(documentationDetailsDTO.author);
+    private Author persistAuthor(String username, String fullName) {
+        Author author = authorRepository.findByUserName(username);
 
         if (author == null) {
-            author = new Author(documentationDetailsDTO.author);
-            author.setFullName(documentationDetailsDTO.authorName);
+            author = new Author(username);
+            author.setFullName(fullName);
             authorRepository.save(author);
         }
         return author;

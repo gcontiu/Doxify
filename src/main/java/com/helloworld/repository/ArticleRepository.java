@@ -8,6 +8,4 @@ public interface ArticleRepository extends CrudRepository<Article, String> {
 
     Article findByTitle(String title);
 
-
-
 }
