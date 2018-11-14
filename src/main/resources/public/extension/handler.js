@@ -9,14 +9,12 @@ TimeMe.initialize({
 
 TimeMe.startTimer("my-activity");
 
-var data = {};
+var data = new Object();
 var blackListedArticles = ["*scrum of scrum*", "*tech alignment*"];
 
 
 // this is fired for closing the tab or window
 window.addEventListener('unload', function(event) {
-
-    data ["url"] = document.URL;
 
     if (collectAuthorAndUser()){
 
@@ -38,22 +36,22 @@ window.addEventListener('unload', function(event) {
 function callAjax(url, data){
     TimeMe.stopTimer("my-activity");
     var timeOnActivity = TimeMe.getTimeOnPageInSeconds("my-activity");
-    data ["spentTimeInSeconds"] = timeOnActivity;
-
-    var xmlhttp= new XMLHttpRequest();
-    xmlhttp.open("POST", url, true);
-    xmlhttp.setRequestHeader("Content-type", "application/json");
-    xmlhttp.send(JSON.stringify(data));
+    data ["timeSpentInSeconds"] = timeOnActivity;
+    var xmlHttp= new XMLHttpRequest();
+    xmlHttp.open("POST", url, true);
+    xmlHttp.setRequestHeader("Content-type", "application/json");
+    xmlHttp.send(JSON.stringify(data));
 }
 
 function validateContent(content) {
-    var title = content.getElementsByClassName("page-title")[0].textContent.toLowerCase();
+    var title = content.getElementsByClassName("page-title")[0].textContent;
+    var lowerCaseTitle = title.toLowerCase();
     var pageContent = content.getElementsByClassName("entry-content")[0].textContent;
-    data["articleTitle"] = title;
+    data["title"] = title;
     analyzeContent(pageContent);
     for(var blackListedElement in blackListedArticles){
         var regex = new RegExp(blackListedElement);
-        if(regex.test(title)){
+        if(regex.test(lowerCaseTitle)){
             return false;
         }
     }
@@ -84,7 +82,8 @@ function collectAuthorAndUser(){
 		//extract author user from link
     	author = authors[0].href.substr(42);
     	author = author.substr(0,author.length-1);
-    	data ["author"] = author;
+    	
+    	var authorDTO = new Object();
 
     	user = document.querySelector("span.username").textContent;
     	authorName = document.querySelector("a[rel*='author']").textContent;
@@ -92,9 +91,9 @@ function collectAuthorAndUser(){
 		
 		//do not collect data if the logged in user is the same as the autor
     	if (username != null && authorName != null && username != authorName) {
-    		data ["authorName"] = authorName;
-    		data ["user"] = user;
-    		data ["username"] = username;
+            authorDTO ["username"] = author;
+            authorDTO ["fullName"] = authorName;
+            data ["author"] = authorDTO;
 			collected = true;
 		}
 	}

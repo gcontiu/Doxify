@@ -1,5 +1,6 @@
 package com.helloworld.data.dto;
 
 public class AuthorDTO {
-    public String userName;
+    public String username;
+    public String fullName;
 }

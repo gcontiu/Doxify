@@ -1,6 +1,6 @@
 package com.helloworld.controller;
 
-import com.helloworld.data.dto.DocumentationDetailsDTO;
+import com.helloworld.data.dto.ArticleDTO;
 import com.helloworld.service.DataProcessorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +19,15 @@ public class ArticleReadController {
     private DataProcessorService dataProcessorService;
 
     @PostMapping("/articleReadAction")
-    public void articleReadAction (@RequestBody DocumentationDetailsDTO documentationDetailsDTO) {
-        LOGGER.info("Article '{}' was red for {} seconds.", documentationDetailsDTO.articleTitle, documentationDetailsDTO.spentTimeInSeconds);
-        dataProcessorService.processArticleDetails(documentationDetailsDTO);
+    public void articleReadAction (@RequestBody ArticleDTO articleDTO) {
+        LOGGER.info("Article '{}' was red for {} seconds.", articleDTO.title, articleDTO.timeSpentInSeconds);
+        dataProcessorService.processArticleDetails(articleDTO);
     }
 
     @PostMapping("/blackListedArticle")
-    public void readBlackListedArticle (@RequestBody DocumentationDetailsDTO documentationDetailsDTO) {
-        LOGGER.info("Article '{}' was detected as blacklisted.", documentationDetailsDTO.articleTitle);
-        dataProcessorService.processBlackListedArticle(documentationDetailsDTO);
+    public void readBlackListedArticle (@RequestBody ArticleDTO articleDTO) {
+        LOGGER.info("Article '{}' was detected as blacklisted.", articleDTO.title);
+        dataProcessorService.processBlackListedArticle(articleDTO);
     }
 
 }

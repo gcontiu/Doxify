@@ -7,7 +7,7 @@ import com.helloworld.data.Author;
 import com.helloworld.data.Comment;
 import com.helloworld.data.CommentReadAction;
 import com.helloworld.data.dto.CommentDTO;
-import com.helloworld.data.dto.DocumentationDetailsDTO;
+import com.helloworld.data.dto.ArticleDTO;
 import com.helloworld.repository.ArticleRepository;
 import com.helloworld.repository.AuthorRepository;
 import com.helloworld.repository.CommentRepository;
@@ -34,24 +34,24 @@ public class DataProcessorService {
         this.commentRepository = commentRepository;
     }
 
-    public void processArticleDetails(DocumentationDetailsDTO documentationDetailsDTO) {
+    public void processArticleDetails(ArticleDTO articleDTO) {
 
-        processArticle(documentationDetailsDTO, Boolean.FALSE);
+        processArticle(articleDTO, Boolean.FALSE);
     }
 
-    public void processBlackListedArticle(DocumentationDetailsDTO documentationDetailsDTO) {
+    public void processBlackListedArticle(ArticleDTO articleDTO) {
 
-        processArticle(documentationDetailsDTO, Boolean.TRUE);
+        processArticle(articleDTO, Boolean.TRUE);
     }
 
-    private void processArticle(DocumentationDetailsDTO documentationDetailsDTO, Boolean isBlackListed) {
-        Author author = persistAuthor(documentationDetailsDTO.author, documentationDetailsDTO.authorName);
+    private void processArticle(ArticleDTO articleDTO, Boolean isBlackListed) {
+        Author author = persistAuthor(articleDTO.author.username, articleDTO.author.fullName);
 
-        Article article = persistArticle(documentationDetailsDTO.articleTitle, author, isBlackListed);
+        Article article = persistArticle(articleDTO.title, author, isBlackListed);
 
-        persistComments(documentationDetailsDTO.commentList, documentationDetailsDTO.spentTimeInSeconds, article);
+        persistComments(articleDTO.commentList, articleDTO.timeSpentInSeconds, article);
 
-        persistArticleReadAction(documentationDetailsDTO.nrOfLines, documentationDetailsDTO.spentTimeInSeconds, article);
+        persistArticleReadAction(articleDTO.nrOfLines, articleDTO.timeSpentInSeconds, article);
     }
 
     private void persistComments(List<CommentDTO> comments, Float spentTime, Article article) {
