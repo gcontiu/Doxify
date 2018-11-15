@@ -34,6 +34,10 @@ public class DataProcessorService {
         this.commentRepository = commentRepository;
     }
 
+    public long countAllAuthors() {
+        return authorRepository.count();
+    }
+
     public void processArticleDetails(ArticleDTO articleDTO) {
 
         processArticle(articleDTO, Boolean.FALSE);

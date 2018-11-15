@@ -31,7 +31,7 @@ public class CoinCalculator {
     }
 
     private float round(float number) {
-        BigDecimal bd = new BigDecimal(number);
+        BigDecimal bd = BigDecimal.valueOf(number);
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
     }

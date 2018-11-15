@@ -4,7 +4,7 @@
   "name": "measureTimeSpent",
   "version": "1.0",
 
-  "description": "Measure time spent on specific we pages",
+  "description": "Measure time spent on specific web pages",
 
   "permissions": [
     "<all_urls>"

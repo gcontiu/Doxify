@@ -17,3 +17,7 @@
 
 ### Access Main Dashboard
  - http://localhost:8585/dashboard.html
+ 
+### Connect to Database
+ - http://localhost:8585/h2-console
+ - change the JDBC URL: ```jdbc:h2:mem:testdb```
