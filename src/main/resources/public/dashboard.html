@@ -55,10 +55,8 @@
             <div class="card-header text-uppercase text-center">contributors</div>
             <div class="card-body">
                 <h5 class="card-title text-center text-center">Number of Contributors</h5>
-                <p class="card-text text-center">
-                    <script>
-                        getAllAuthors();
-                    </script>
+                <p class="card-text text-center" id="allAuthors">
+                    <script>getAll("allAuthors");</script>
                 </p>
             </div>
         </div>
@@ -67,7 +65,9 @@
             <div class="card-header text-uppercase text-center">articles</div>
             <div class="card-body">
                 <h5 class="card-title text-center">Number of Articles</h5>
-                <p class="card-text text-center">100</p>
+                <p class="card-text text-center" id="allArticles">
+                    <script>getAll("allArticles");</script>
+                </p>
             </div>
         </div>
 

@@ -38,6 +38,10 @@ public class DataProcessorService {
         return authorRepository.count();
     }
 
+    public long countAllArticles() {
+        return articleRepository.count();
+    }
+
     public void processArticleDetails(ArticleDTO articleDTO) {
 
         processArticle(articleDTO, Boolean.FALSE);

@@ -1,16 +1,12 @@
-function getAllAuthors() {
-    var response = null;
+function getAll(elementId) {
     var ajax = new XMLHttpRequest();
-    ajax.open("GET", "http://localhost:8585/allAuthors", true);
+    ajax.open("GET", "http://localhost:8585/" + elementId, true);
     ajax.send();
 
     ajax.onload = function () {
-        response = JSON.parse(this.response);
+        var response = JSON.parse(this.response);
         if (ajax.status >= 200 && ajax.status < 400) {
-            console.log(response);
-            return response;
+            document.getElementById(elementId).innerHTML = response;
         }
     };
-
-    return response;
 }

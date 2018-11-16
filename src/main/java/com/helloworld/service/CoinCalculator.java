@@ -1,14 +1,14 @@
 package com.helloworld.service;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
 
 @Component
 public class CoinCalculator {
 
-    private static final int decimalPlace = 2;
+    private static final int DECIMAL_PLACE = 2;
 
     @Value("${coins.baseValue}")
     private Float baseValue;
@@ -26,13 +26,13 @@ public class CoinCalculator {
         return round(numberOfLines * numberOfLinesPercentage + timeSpent * timeSpentPercentage + baseValue);
     }
 
-    public Float calculateNrOfCoinsForComment(){
+    public Float calculateNrOfCoinsForComment() {
         return round(commentPercentage * baseValue);
     }
 
     private float round(float number) {
         BigDecimal bd = BigDecimal.valueOf(number);
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        bd = bd.setScale(DECIMAL_PLACE, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
     }
 }

@@ -20,10 +20,7 @@ public class AuthorReadController {
     @GetMapping("/allAuthors")
     @ResponseBody
     public Long countAllAuthors() {
-        long no = service.countAllAuthors();
-        LOGGER.info("All Authors No: {}", no);
-
-        return no;
+        return service.countAllAuthors();
     }
 
 }
