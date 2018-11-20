@@ -93,8 +93,10 @@
         <small class="text-muted">See how your Coins evolved in Time for your work</small>
     </h2>
     <canvas id="userChart" width="400" height="180">
-        <script>populateChart()</script>
+        <script>doXAxisWithDays()</script>
     </canvas>
+    <input type="button" class="btn btn-outline-warning" onclick="doToggle()" value="Toggle Weekly Data"
+           id="toggleBtn">
     <hr>
 </main>
 
