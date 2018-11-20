@@ -42,7 +42,10 @@ function doXAxisWithDays() {
             display: true,
             scaleLabel: {
                 display: true,
-                labelString: labelName
+                labelString: labelName,
+                fontSize: 18,
+                fontStyle: 'bold',
+                fontColor: colorLine
             }
         }],
         yAxes: [{
@@ -68,7 +71,10 @@ function doXAxisWithMonths() {
             display: true,
             scaleLabel: {
                 display: true,
-                labelString: labelName
+                labelString: labelName,
+                fontSize: 18,
+                fontStyle: 'bold',
+                fontColor: colorLine
             }
         }],
         yAxes: [{
@@ -87,13 +93,13 @@ function doToggle() {
     var monthly = 'Toggle Monthly Data';
     var btn = document.getElementById('toggleBtn');
 
-    if (btn.value === weekly) {
-        btn.value = monthly;
-        btn.className = 'btn btn-outline-warning';
-        doXAxisWithDays();
-    } else {
+    if (btn.value === monthly) {
         btn.value = weekly;
         btn.className = 'btn btn-outline-primary';
         doXAxisWithMonths();
+    } else {
+        btn.value = monthly;
+        btn.className = 'btn btn-outline-warning';
+        doXAxisWithDays();
     }
 }
