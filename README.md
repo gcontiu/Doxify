@@ -20,4 +20,4 @@
  
 ### Connect to Database
  - http://localhost:8585/h2-console
- - change the JDBC URL: ```jdbc:h2:mem:testdb```
+ - change the JDBC URL: ```jdbc:h2:file:~/testdb```
