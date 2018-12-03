@@ -51,4 +51,8 @@ public class Comment {
     public void addCommentReadAction(CommentReadAction commentReadAction) {
         commentReadActions.add(commentReadAction);
     }
+
+    public List<CommentReadAction> getCommentReadActions() {
+        return new ArrayList<>(commentReadActions);
+    }
 }

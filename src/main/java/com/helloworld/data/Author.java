@@ -42,6 +42,13 @@ public class Author {
         comments = new ArrayList<>();
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
 
     public void addArticle(Article article) {
         articles.add(article);

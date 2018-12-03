@@ -48,4 +48,8 @@ public class CommentReadAction {
     public void setNrOfCoins(Float nrOfCoins) {
         this.nrOfCoins = nrOfCoins;
     }
+
+    public Float getNrOfCoins() {
+        return nrOfCoins;
+    }
 }

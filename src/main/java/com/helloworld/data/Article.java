@@ -62,4 +62,12 @@ public class Article {
     public void setBlackListed(boolean blackListed) {
         isBlackListed = blackListed;
     }
+
+    public List<Comment> getComments() {
+        return new ArrayList<>(comments);
+    }
+
+    public List<ArticleReadAction> getArticleReadActions() {
+        return new ArrayList<>(articleReadActions);
+    }
 }
