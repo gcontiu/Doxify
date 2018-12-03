@@ -6,9 +6,9 @@ import com.helloworld.data.ArticleReadAction;
 import com.helloworld.data.Author;
 import com.helloworld.data.Comment;
 import com.helloworld.data.CommentReadAction;
-import com.helloworld.data.dto.CommentDTO;
 import com.helloworld.data.dto.ArticleDTO;
 import com.helloworld.data.dto.AuthorStatsDTO;
+import com.helloworld.data.dto.CommentDTO;
 import com.helloworld.repository.ArticleRepository;
 import com.helloworld.repository.AuthorRepository;
 import com.helloworld.repository.CommentRepository;
@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DataProcessorService {
@@ -70,6 +71,7 @@ public class DataProcessorService {
             String fullName = author.getFullName();
             List<Article> articles = author.getArticles();
             int nrOfArticles = articles.size();
+
             double nrOfCoins = articles.stream()
                     .mapToDouble(article -> {
                         double sum = article.getArticleReadActions().stream()
@@ -83,16 +85,32 @@ public class DataProcessorService {
                                 .sum();
                         return sum;
                     }).sum();
-            authorStatsDTOs.add(
-                    new AuthorStatsDTO(userName, fullName, nrOfArticles, (new BigDecimal(nrOfCoins)).floatValue()));
+
+            Optional<Article> mostReadArticle = articles.stream()
+                    .reduce((article1, article2) -> {
+                        if (article1.getArticleReadActions().size() > article2.getArticleReadActions().size()) {
+                            return article1;
+                        } else {
+                            return article2;
+                        }
+                    });
+            String mostReadArticleTitle = null;
+            String mostReadArticleUrl = null;
+            if(mostReadArticle.isPresent()) {
+                mostReadArticleTitle = mostReadArticle.get().getTitle();
+                mostReadArticleUrl = mostReadArticle.get().getUrl();
+            }
+
+            authorStatsDTOs.add(new AuthorStatsDTO(userName, fullName, nrOfArticles,
+                    (new BigDecimal(nrOfCoins)).floatValue(), mostReadArticleTitle, mostReadArticleUrl));
         });
 
         LOGGER.info("Calculating Author rankings...");
         authorStatsDTOs.sort(AuthorStatsDTO::compareTo);
 
-        int rank = authorStatsDTOs.size();
+        int rank = 1;
         for (AuthorStatsDTO authorStatsDTO : authorStatsDTOs) {
-            authorStatsDTO.rank = rank--;
+            authorStatsDTO.rank = rank++;
         }
         return authorStatsDTOs;
     }

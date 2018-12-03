@@ -55,6 +55,13 @@ public class Article {
         articleReadActions = new ArrayList<>();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 
     public void addComment(Comment comment) {
         comments.add(comment);
