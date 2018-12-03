@@ -29,6 +29,9 @@ public class Article {
     @Column(unique = true, nullable = false)
     private String title;
 
+    @Column(unique = true, nullable = false)
+    private String url;
+
     @Column(nullable = false)
     private boolean isBlackListed;
 
@@ -43,9 +46,11 @@ public class Article {
     public Article() {
     }
 
-    public Article(String title, Author author) {
+    public Article(String title, String url, Author author, boolean isBlackListed) {
         this.title = title;
+        this.url = url;
         this.author = author;
+        this.isBlackListed = isBlackListed;
         comments = new ArrayList<>();
         articleReadActions = new ArrayList<>();
     }
