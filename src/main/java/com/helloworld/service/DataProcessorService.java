@@ -122,7 +122,9 @@ public class DataProcessorService {
 
         persistComments(articleDTO.commentList, articleDTO.timeSpentInSeconds, article);
 
-        persistArticleReadAction(articleDTO.nrOfLines, articleDTO.timeSpentInSeconds, article);
+        if (!isBlackListed) {
+            persistArticleReadAction(articleDTO.nrOfLines, articleDTO.timeSpentInSeconds, article);
+        }
     }
 
     private void persistComments(List<CommentDTO> comments, Float spentTime, Article article) {
@@ -133,10 +135,12 @@ public class DataProcessorService {
                 Author commentAuthor = persistAuthor(commentDTO.user, commentDTO.author);
                 comment = new Comment(commentAuthor, article, commentDTO.hash);
                 commentAuthor.addComment(comment);
-                CommentReadAction commentReadAction = new CommentReadAction(comment, LocalDateTime.now());
-                commentReadAction.setNrOfCoins(commentCoinValue);
-                commentReadAction.setSecondsSpent(spentTime);
-                comment.addCommentReadAction(commentReadAction);
+                if (!article.isBlackListed()) {
+                    CommentReadAction commentReadAction = new CommentReadAction(comment, LocalDateTime.now());
+                    commentReadAction.setNrOfCoins(commentCoinValue);
+                    commentReadAction.setSecondsSpent(spentTime);
+                    comment.addCommentReadAction(commentReadAction);
+                }
                 authorRepository.save(commentAuthor);
             }
         }

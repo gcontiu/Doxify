@@ -76,6 +76,10 @@ public class Article {
         isBlackListed = blackListed;
     }
 
+    public boolean isBlackListed() {
+        return isBlackListed;
+    }
+
     public Long getId() {
         return id;
     }

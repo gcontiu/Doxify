@@ -73,7 +73,6 @@ function collectAuthorAndUser(){
     var authorName = null;
     var username = null;
 	var collected = false;
-	var pageUrl;
 
     var authors = document.querySelectorAll("a[rel*='author']");
 	
@@ -90,10 +89,7 @@ function collectAuthorAndUser(){
     	authorName = document.querySelector("a[rel*='author']").textContent;
     	username = document.querySelector("span.display-name").textContent;
 
-        pageUrl = document.getElementsByClassName("date")
-            .item(0).getElementsByTagName("a")
-            .item(0).getAttribute("href");
-        data["url"] = pageUrl;
+        data["url"] = document.URL;
 		
 		//do not collect data if the logged in user is the same as the autor
     	if (username != null && authorName != null && username != authorName) {
