@@ -1,18 +1,11 @@
 package com.helloworld.data;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.*;
 
 @Entity
 public class Article {
@@ -38,8 +31,7 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticleReadAction> articleReadActions;
 
-
-    //default constructor needed by JPA and Hibernate
+    // default constructor needed by JPA and Hibernate
     public Article() {
     }
 
@@ -49,7 +41,6 @@ public class Article {
         comments = new ArrayList<>();
         articleReadActions = new ArrayList<>();
     }
-
 
     public void addComment(Comment comment) {
         comments.add(comment);
@@ -62,4 +53,21 @@ public class Article {
     public void setBlackListed(boolean blackListed) {
         isBlackListed = blackListed;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public List<ArticleReadAction> getArticleReadActions() {
+        return articleReadActions;
+    }
+
 }

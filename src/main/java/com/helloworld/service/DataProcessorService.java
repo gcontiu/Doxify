@@ -1,21 +1,17 @@
 package com.helloworld.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 
-import com.helloworld.data.Article;
-import com.helloworld.data.ArticleReadAction;
-import com.helloworld.data.Author;
-import com.helloworld.data.Comment;
-import com.helloworld.data.CommentReadAction;
-import com.helloworld.data.dto.CommentDTO;
-import com.helloworld.data.dto.ArticleDTO;
-import com.helloworld.repository.ArticleRepository;
-import com.helloworld.repository.AuthorRepository;
-import com.helloworld.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.helloworld.data.*;
+import com.helloworld.data.dto.ArticleDTO;
+import com.helloworld.data.dto.CommentDTO;
+import com.helloworld.repository.ArticleRepository;
+import com.helloworld.repository.AuthorRepository;
+import com.helloworld.repository.CommentRepository;
 
 @Service
 public class DataProcessorService {
@@ -27,7 +23,7 @@ public class DataProcessorService {
 
     @Autowired
     public DataProcessorService(AuthorRepository authorRepository, ArticleRepository articleRepository, CoinCalculator coinCalculator,
-                                CommentRepository commentRepository) {
+            CommentRepository commentRepository) {
         this.authorRepository = authorRepository;
         this.articleRepository = articleRepository;
         this.coinCalculator = coinCalculator;

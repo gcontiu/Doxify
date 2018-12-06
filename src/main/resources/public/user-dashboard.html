@@ -10,23 +10,23 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="js/parseUsername.js"></script>
     <script src="js/parseUserStatistics.js"></script>
+    <script src="js/parseDashboardData.js"></script>
     <script src="js/lib/Chart.js"></script>
 
     <title>User Dashboard</title>
 </head>
 <body style="background-color: #eee;">
 
-<main role="main" class="container justify-content-center">
+<main role="main" class="container justify-content-center" id="allArticlesForAuthor">
     <!-- Best of Points -->
     <hr>
     <div class="card border-info mb-3">
-        <div class="card-header font-weight-bold" id="hello">
-            <script>showUsername('hello')</script>
+        <div class="card-header font-weight-bold" id="userFullNameId">
             <small class="text-muted">Checkout live statistics on how your documentation evolved.</small>
         </div>
         <div class="card-body">
             <blockquote class="blockquote mb-0">
-                <p class="card-text">Coins gained: <span class="badge badge-pill badge-danger">50</span>&emsp;Total
+                <p class="card-text">Coins gained: <span class="badge badge-pill badge-danger" id="coinsGainedId"></span>&emsp;Total
                     number of articles: <span class="badge badge-pill badge-primary">20</span></p>
             </blockquote>
         </div>
@@ -99,6 +99,7 @@
            id="toggleBtn">
     <hr>
 </main>
+<script>getAllByParam('allArticlesForAuthor', 'userFullNameId', 'coinsGainedId', getUsername())</script>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

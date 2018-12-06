@@ -1,15 +1,10 @@
 package com.helloworld.data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.time.LocalDateTime;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.*;
 
 @Entity
 public class ArticleReadAction {
@@ -32,7 +27,7 @@ public class ArticleReadAction {
     @Column(nullable = false)
     private Float nrOfCoins;
 
-    public ArticleReadAction(){
+    public ArticleReadAction() {
     }
 
     public ArticleReadAction(Article article, LocalDateTime timestamp) {
@@ -50,5 +45,33 @@ public class ArticleReadAction {
 
     public Float getNrOfCoins() {
         return nrOfCoins;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Float getSecondsSpent() {
+        return secondsSpent;
     }
 }

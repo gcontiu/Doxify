@@ -1,16 +1,11 @@
 package com.helloworld.data;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.*;
 
 @Entity
 public class Author {
@@ -31,8 +26,7 @@ public class Author {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
-
-    //default constructor needed by JPA and Hibernate
+    // default constructor needed by JPA and Hibernate
     public Author() {
     }
 
@@ -41,7 +35,6 @@ public class Author {
         articles = new ArrayList<>();
         comments = new ArrayList<>();
     }
-
 
     public void addArticle(Article article) {
         articles.add(article);
@@ -55,7 +48,11 @@ public class Author {
         return new ArrayList<>(articles);
     }
 
-    public void setFullName(String fullName){
+    public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 }
