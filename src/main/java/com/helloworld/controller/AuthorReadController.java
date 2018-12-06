@@ -22,5 +22,4 @@ public class AuthorReadController {
     public Long countAllAuthors() {
         return service.countAllAuthors();
     }
-
 }

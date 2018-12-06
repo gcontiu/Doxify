@@ -1,5 +1,9 @@
 package com.helloworld.data;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,9 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import java.time.LocalDateTime;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class CommentReadAction {
@@ -32,7 +33,7 @@ public class CommentReadAction {
     @Column(nullable = false)
     private Float nrOfCoins;
 
-    public CommentReadAction(){
+    public CommentReadAction() {
 
     }
 
@@ -47,5 +48,9 @@ public class CommentReadAction {
 
     public void setNrOfCoins(Float nrOfCoins) {
         this.nrOfCoins = nrOfCoins;
+    }
+
+    public Float getNrOfCoins() {
+        return nrOfCoins;
     }
 }

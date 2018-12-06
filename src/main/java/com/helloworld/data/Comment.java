@@ -1,5 +1,10 @@
 package com.helloworld.data;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Comment {
@@ -50,5 +51,9 @@ public class Comment {
 
     public void addCommentReadAction(CommentReadAction commentReadAction) {
         commentReadActions.add(commentReadAction);
+    }
+
+    public List<CommentReadAction> getCommentReadActions() {
+        return new ArrayList<>(commentReadActions);
     }
 }

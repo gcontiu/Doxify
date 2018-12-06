@@ -7,6 +7,7 @@ public class ArticleDTO {
     public Integer nrOfLines;
     public AuthorDTO author;
     public String title;
+    public String url;
     public List<CommentDTO> commentList;
 
     public Float getTimeSpentInSeconds() {

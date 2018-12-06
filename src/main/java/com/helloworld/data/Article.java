@@ -5,7 +5,15 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 public class Article {
@@ -22,6 +30,9 @@ public class Article {
     @Column(unique = true, nullable = false)
     private String title;
 
+    @Column(unique = true, nullable = false)
+    private String url;
+
     @Column(nullable = false)
     private boolean isBlackListed;
 
@@ -31,15 +42,26 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticleReadAction> articleReadActions;
 
-    // default constructor needed by JPA and Hibernate
+
+    //default constructor needed by JPA and Hibernate
     public Article() {
     }
 
-    public Article(String title, Author author) {
+    public Article(String title, String url, Author author, boolean isBlackListed) {
         this.title = title;
+        this.url = url;
         this.author = author;
+        this.isBlackListed = isBlackListed;
         comments = new ArrayList<>();
         articleReadActions = new ArrayList<>();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public void addComment(Comment comment) {
@@ -62,12 +84,11 @@ public class Article {
         return author;
     }
 
-    public String getTitle() {
-        return title;
+    public List<Comment> getComments() {
+        return new ArrayList<>(comments);
     }
 
     public List<ArticleReadAction> getArticleReadActions() {
-        return articleReadActions;
+        return new ArrayList<>(articleReadActions);
     }
-
 }

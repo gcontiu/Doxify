@@ -1,13 +1,24 @@
 package com.helloworld.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.helloworld.data.*;
+import com.helloworld.data.Article;
+import com.helloworld.data.ArticleReadAction;
+import com.helloworld.data.Author;
+import com.helloworld.data.Comment;
+import com.helloworld.data.CommentReadAction;
 import com.helloworld.data.dto.ArticleDTO;
+import com.helloworld.data.dto.AuthorStatsDTO;
 import com.helloworld.data.dto.CommentDTO;
 import com.helloworld.repository.ArticleRepository;
 import com.helloworld.repository.AuthorRepository;
@@ -16,6 +27,8 @@ import com.helloworld.repository.CommentRepository;
 @Service
 public class DataProcessorService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(DataProcessorService.class);
+
     private final AuthorRepository authorRepository;
     private final ArticleRepository articleRepository;
     private final CoinCalculator coinCalculator;
@@ -23,7 +36,7 @@ public class DataProcessorService {
 
     @Autowired
     public DataProcessorService(AuthorRepository authorRepository, ArticleRepository articleRepository, CoinCalculator coinCalculator,
-            CommentRepository commentRepository) {
+                                CommentRepository commentRepository) {
         this.authorRepository = authorRepository;
         this.articleRepository = articleRepository;
         this.coinCalculator = coinCalculator;
@@ -48,10 +61,64 @@ public class DataProcessorService {
         processArticle(articleDTO, Boolean.TRUE);
     }
 
+    @Cacheable(cacheNames = "authorStats")
+    public List<AuthorStatsDTO> getAllAuthorStats() {
+        LOGGER.info("Getting AuthorStats from database...");
+        List<AuthorStatsDTO> authorStatsDTOs = new ArrayList<>();
+
+        authorRepository.findAll().forEach(author -> {
+            String userName = author.getUserName();
+            String fullName = author.getFullName();
+            List<Article> articles = author.getArticles();
+            int nrOfArticles = articles.size();
+
+            double nrOfCoins = articles.stream()
+                    .mapToDouble(article -> {
+                        double sum = article.getArticleReadActions().stream()
+                                .mapToDouble(ArticleReadAction::getNrOfCoins)
+                                .sum();
+                        sum += article.getComments().stream()
+                                .map(Comment::getCommentReadActions)
+                                .mapToDouble(commentReadActionList -> commentReadActionList.stream()
+                                        .mapToDouble(CommentReadAction::getNrOfCoins)
+                                        .sum())
+                                .sum();
+                        return sum;
+                    }).sum();
+
+            Optional<Article> mostReadArticle = articles.stream()
+                    .reduce((article1, article2) -> {
+                        if (article1.getArticleReadActions().size() > article2.getArticleReadActions().size()) {
+                            return article1;
+                        } else {
+                            return article2;
+                        }
+                    });
+            String mostReadArticleTitle = null;
+            String mostReadArticleUrl = null;
+            if (mostReadArticle.isPresent()) {
+                mostReadArticleTitle = mostReadArticle.get().getTitle();
+                mostReadArticleUrl = mostReadArticle.get().getUrl();
+            }
+
+            authorStatsDTOs.add(new AuthorStatsDTO(userName, fullName, nrOfArticles,
+                    (new BigDecimal(nrOfCoins)).floatValue(), mostReadArticleTitle, mostReadArticleUrl));
+        });
+
+        LOGGER.info("Calculating Author rankings...");
+        authorStatsDTOs.sort(AuthorStatsDTO::compareTo);
+
+        int rank = 1;
+        for (AuthorStatsDTO authorStatsDTO : authorStatsDTOs) {
+            authorStatsDTO.rank = rank++;
+        }
+        return authorStatsDTOs;
+    }
+
     private void processArticle(ArticleDTO articleDTO, Boolean isBlackListed) {
         Author author = persistAuthor(articleDTO.author.username, articleDTO.author.fullName);
 
-        Article article = persistArticle(articleDTO.title, author, isBlackListed);
+        Article article = persistArticle(articleDTO.title, articleDTO.url, author, isBlackListed);
 
         persistComments(articleDTO.commentList, articleDTO.timeSpentInSeconds, article);
 
@@ -86,12 +153,11 @@ public class DataProcessorService {
         articleRepository.save(article);
     }
 
-    private Article persistArticle(String articleTitle, Author author, boolean isBlackListed) {
+    private Article persistArticle(String articleTitle, String url, Author author, boolean isBlackListed) {
         Article article = articleRepository.findByTitle(articleTitle);
 
         if (article == null) {
-            article = new Article(articleTitle, author);
-            article.setBlackListed(isBlackListed);
+            article = new Article(articleTitle, url, author, isBlackListed);
             articleRepository.save(article);
         }
         return article;

@@ -12,7 +12,7 @@
 
     <title>Statistics</title>
 </head>
-<body style="background-color: #eee;">
+<body style="background-color: #eee;" onload="populateAuthorRankTable();">
 
 <main role="main" class="container justify-content-center">
     <!-- Carousel -->
@@ -103,29 +103,7 @@
             <th scope="col">Most Read Article</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Andreea Ilea</td>
-            <td>50</td>
-            <td><a href="https://weblog.endava.com/worldpay/2018/09/20/futurepay-overview/">FUTUREPAY OVERVIEW</a>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Madalin Ilie</td>
-            <td>40</td>
-            <td>
-                <a href="https://weblog.endava.com/worldpay/2015/08/28/branching-strategy-for-the-new-dba-qa-process/">BRANCHING
-                    STRATEGY FOR THE NEW DBA QA PROCESS</a></td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Samuel Szabo-Sinka</td>
-            <td>30</td>
-            <td><a href="https://weblog.endava.com/worldpay/2018/10/30/charging-back-a-payment/">CHARGING BACK A
-                PAYMENT</a></td>
-        </tr>
+        <tbody id="authorRankTableBody">
         </tbody>
     </table>
 
