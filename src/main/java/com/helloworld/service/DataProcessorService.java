@@ -68,8 +68,8 @@ public class DataProcessorService {
         }
     }
 
-    private void persistComments(List<CommentDTO> comments, Float spentTime, Article article) {
-        Float commentCoinValue = coinCalculator.calculateNrOfCoinsForComment();
+    private void persistComments(List<CommentDTO> comments, Double spentTime, Article article) {
+        Double commentCoinValue = coinCalculator.calculateNrOfCoinsForComment();
         for (CommentDTO commentDTO : comments) {
             Comment comment = commentRepository.findByContentHash(commentDTO.hash);
             if (comment == null) {
@@ -87,10 +87,10 @@ public class DataProcessorService {
         }
     }
 
-    private void persistArticleReadAction(Integer nrOfLines, Float spentTime, Article article) {
+    private void persistArticleReadAction(Integer nrOfLines, Double spentTime, Article article) {
         ArticleReadAction articleReadAction = new ArticleReadAction(article, LocalDateTime.now());
 
-        Float nrOfCoins = coinCalculator.calculateNrOfCoinsForArticle(nrOfLines, spentTime);
+        Double nrOfCoins = coinCalculator.calculateNrOfCoinsForArticle(nrOfLines, spentTime);
 
         articleReadAction.setNrOfCoins(nrOfCoins);
         articleReadAction.setSecondsSpent(spentTime);

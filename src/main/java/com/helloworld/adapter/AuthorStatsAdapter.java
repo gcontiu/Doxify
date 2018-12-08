@@ -6,13 +6,13 @@ import com.helloworld.data.Comment;
 import com.helloworld.data.CommentReadAction;
 import com.helloworld.data.dto.AuthorStatsDTO;
 import com.helloworld.repository.AuthorRepository;
+import com.helloworld.service.CoinCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +22,12 @@ public class AuthorStatsAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorStatsAdapter.class);
     private final AuthorRepository authorRepository;
+    private final CoinCalculator coinCalculator;
 
     @Autowired
-    public AuthorStatsAdapter(AuthorRepository authorRepository) {
+    public AuthorStatsAdapter(AuthorRepository authorRepository, CoinCalculator coinCalculator) {
         this.authorRepository = authorRepository;
+        this.coinCalculator = coinCalculator;
     }
 
     @Cacheable(cacheNames = "authorStats")
@@ -52,6 +54,7 @@ public class AuthorStatsAdapter {
                                 .sum();
                         return sum;
                     }).sum();
+            nrOfCoins = coinCalculator.round(nrOfCoins);
 
             Optional<Article> mostReadArticle = articles.stream()
                     .reduce((article1, article2) -> {
@@ -68,8 +71,8 @@ public class AuthorStatsAdapter {
                 mostReadArticleUrl = mostReadArticle.get().getUrl();
             }
 
-            authorStatsDTOs.add(new AuthorStatsDTO(userName, fullName, nrOfArticles,
-                    (new BigDecimal(nrOfCoins)).floatValue(), mostReadArticleTitle, mostReadArticleUrl));
+            authorStatsDTOs.add(new AuthorStatsDTO(userName, fullName, nrOfArticles, nrOfCoins, mostReadArticleTitle,
+                    mostReadArticleUrl));
         });
 
         LOGGER.info("Calculating Author rankings...");

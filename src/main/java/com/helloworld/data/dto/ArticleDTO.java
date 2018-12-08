@@ -3,18 +3,18 @@ package com.helloworld.data.dto;
 import java.util.List;
 
 public class ArticleDTO {
-    public Float timeSpentInSeconds;
+    public Double timeSpentInSeconds;
     public Integer nrOfLines;
     public AuthorDTO author;
     public String title;
     public String url;
     public List<CommentDTO> commentList;
 
-    public Float getTimeSpentInSeconds() {
+    public Double getTimeSpentInSeconds() {
         return timeSpentInSeconds;
     }
 
-    public void setTimeSpentInSeconds(Float timeSpentInSeconds) {
+    public void setTimeSpentInSeconds(Double timeSpentInSeconds) {
         this.timeSpentInSeconds = timeSpentInSeconds;
     }
 

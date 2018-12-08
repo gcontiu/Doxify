@@ -28,10 +28,10 @@ public class ArticleReadAction {
     private LocalDateTime timestamp;
 
     @Column(nullable = false)
-    private Float secondsSpent;
+    private Double secondsSpent;
 
     @Column(nullable = false)
-    private Float nrOfCoins;
+    private Double nrOfCoins;
 
     public ArticleReadAction() {
     }
@@ -41,15 +41,15 @@ public class ArticleReadAction {
         this.timestamp = timestamp;
     }
 
-    public void setSecondsSpent(Float secondsSpent) {
+    public void setSecondsSpent(Double secondsSpent) {
         this.secondsSpent = secondsSpent;
     }
 
-    public void setNrOfCoins(Float nrOfCoins) {
+    public void setNrOfCoins(Double nrOfCoins) {
         this.nrOfCoins = nrOfCoins;
     }
 
-    public Float getNrOfCoins() {
+    public Double getNrOfCoins() {
         return nrOfCoins;
     }
 
@@ -77,7 +77,7 @@ public class ArticleReadAction {
         this.timestamp = timestamp;
     }
 
-    public Float getSecondsSpent() {
+    public Double getSecondsSpent() {
         return secondsSpent;
     }
 }
