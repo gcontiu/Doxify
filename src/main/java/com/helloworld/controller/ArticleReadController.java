@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +30,12 @@ public class ArticleReadController {
     @Autowired
     private UserDataAdapter userDataAdapter;
 
+    @CacheEvict(cacheNames = "authorStats", allEntries = true)
     @PostMapping("/articleReadAction")
     public void articleReadAction(@RequestBody ArticleDTO articleDTO) {
         LOGGER.info("Article '{}' was red for {} seconds.", articleDTO.title, articleDTO.timeSpentInSeconds);
         dataProcessorService.processArticleDetails(articleDTO);
+        LOGGER.info("Invalidated AuthorStatsCache.");
     }
 
     @PostMapping("/blackListedArticle")
