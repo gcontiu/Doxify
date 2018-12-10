@@ -72,10 +72,12 @@
         </div>
 
         <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-            <div class="card-header text-uppercase text-center">average time (m)</div>
+            <div class="card-header text-uppercase text-center">average time (seconds)</div>
             <div class="card-body">
                 <h5 class="card-title text-center">Average Time spent on Article</h5>
-                <p class="card-text text-center">15</p>
+                <p class="card-text text-center" id="averageTimeOnArticles">
+                    <script>getAll("averageTimeOnArticles");</script>
+                </p>
             </div>
         </div>
 
@@ -83,7 +85,9 @@
             <div class="card-header text-uppercase text-center">top coins</div>
             <div class="card-body">
                 <h5 class="card-title text-center">Max Coins Achieved on an Article</h5>
-                <p class="card-text text-center">50</p>
+                <p class="card-text text-center" id="maxCoinAchievedArticle">
+                    <script>getAll("maxCoinAchievedArticle");</script>
+                </p>
             </div>
         </div>
     </div>

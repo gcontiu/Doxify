@@ -40,4 +40,16 @@ public class DashboardDataController {
     public Long countAllAuthors() {
         return service.countAllAuthors();
     }
+
+    @GetMapping("/averageTimeOnArticles")
+    @ResponseBody
+    Double getAverageTimeSpentOnArticles() {
+        return authorStatsAdapter.getAverageTimeSpentOnArticles();
+    }
+
+    @GetMapping("/maxCoinAchievedArticle")
+    @ResponseBody
+    Double getTopAchievedCoinForArticle() {
+        return authorStatsAdapter.getTopAchievedCoinForArticle();
+    }
 }

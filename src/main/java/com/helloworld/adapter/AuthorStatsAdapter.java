@@ -5,6 +5,7 @@ import com.helloworld.data.ArticleReadAction;
 import com.helloworld.data.Comment;
 import com.helloworld.data.CommentReadAction;
 import com.helloworld.data.dto.AuthorStatsDTO;
+import com.helloworld.repository.ArticleReadActionRepository;
 import com.helloworld.repository.AuthorRepository;
 import com.helloworld.service.CoinCalculator;
 import org.slf4j.Logger;
@@ -14,8 +15,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 @Service
 public class AuthorStatsAdapter {
@@ -23,11 +26,13 @@ public class AuthorStatsAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorStatsAdapter.class);
     private final AuthorRepository authorRepository;
     private final CoinCalculator coinCalculator;
+    private final ArticleReadActionRepository articleReadActionRepository;
 
     @Autowired
-    public AuthorStatsAdapter(AuthorRepository authorRepository, CoinCalculator coinCalculator) {
+    public AuthorStatsAdapter(AuthorRepository authorRepository, CoinCalculator coinCalculator, ArticleReadActionRepository articleReadActionRepository) {
         this.authorRepository = authorRepository;
         this.coinCalculator = coinCalculator;
+        this.articleReadActionRepository = articleReadActionRepository;
     }
 
     @Cacheable(cacheNames = "authorStats")
@@ -83,5 +88,23 @@ public class AuthorStatsAdapter {
             authorStatsDTO.rank = rank++;
         }
         return authorStatsDTOs;
+    }
+
+    public Double getAverageTimeSpentOnArticles() {
+        OptionalDouble average = articleReadActionRepository.findAll()
+                .stream()
+                .mapToDouble(articleReadAction -> articleReadAction.getSecondsSpent())
+                .average();
+
+        return coinCalculator.round(average.getAsDouble());
+
+    }
+
+    public Double getTopAchievedCoinForArticle() {
+        Optional<ArticleReadAction> articleReadAction = articleReadActionRepository.findAll()
+                .stream()
+                .max(Comparator.comparing(ArticleReadAction::getNrOfCoins));
+
+        return coinCalculator.round(articleReadAction.get().getNrOfCoins());
     }
 }
