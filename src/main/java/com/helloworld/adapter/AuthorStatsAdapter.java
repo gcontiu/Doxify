@@ -56,17 +56,19 @@ public class AuthorStatsAdapter {
     public AuthorStatsDTO getStatsForAuthor(Author author) {
         LOGGER.info("Calculating AuthorStats for '{}'...", author.getUserName());
 
-        String userName = author.getUserName();
-        String fullName = author.getFullName();
+        AuthorStatsDTO authorStatsDTO = new AuthorStatsDTO();
+
+        authorStatsDTO.username = author.getUserName();
+        authorStatsDTO.fullName = author.getFullName();
 
         List<Article> articles = author.getArticles()
                 .stream()
                 .filter(article -> !article.isBlackListed())
                 .collect(Collectors.toList());
 
-        int nrOfArticles = articles.size();
+        authorStatsDTO.nrOfArticles = articles.size();
 
-        if (nrOfArticles > 0) {
+        if (authorStatsDTO.nrOfArticles > 0) {
             Map<Article, Double> totalCoinsPerArticleReadMap = articles.stream()
                     .collect(Collectors.toMap(article -> article, article -> article.getArticleReadActions()
                             .stream()
@@ -92,7 +94,7 @@ public class AuthorStatsAdapter {
                     .mapToDouble(Double::doubleValue)
                     .sum();
 
-            double totalCoins = coinCalculator.round(Double.sum(totalArticleReadCoins, totalArticleCommentsCoins));
+            authorStatsDTO.totalCoins = coinCalculator.round(Double.sum(totalArticleReadCoins, totalArticleCommentsCoins));
 
             Article mostReadArticle = totalCoinsPerArticleReadMap.entrySet()
                     .stream()
@@ -102,12 +104,11 @@ public class AuthorStatsAdapter {
                     .findFirst()
                     .orElse(new Article());
 
-            String mostReadArticleTitle = mostReadArticle.getTitle();
-            String mostReadArticleUrl = mostReadArticle.getUrl();
-
-            return new AuthorStatsDTO(userName, fullName, nrOfArticles, totalCoins, mostReadArticleTitle, mostReadArticleUrl);
+            authorStatsDTO.mostReadArticleName = mostReadArticle.getTitle();
+            authorStatsDTO.mostReadArticleURL = mostReadArticle.getUrl();
         }
-        return new AuthorStatsDTO(userName, fullName, nrOfArticles, 0, null, null);
+
+        return authorStatsDTO;
     }
 
     @Cacheable(cacheNames = "averageTimeOnArticle")

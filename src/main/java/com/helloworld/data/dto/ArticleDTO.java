@@ -8,46 +8,6 @@ public class ArticleDTO {
     public AuthorDTO author;
     public String title;
     public String url;
+    public String category;
     public List<CommentDTO> commentList;
-
-    public Double getTimeSpentInSeconds() {
-        return timeSpentInSeconds;
-    }
-
-    public void setTimeSpentInSeconds(Double timeSpentInSeconds) {
-        this.timeSpentInSeconds = timeSpentInSeconds;
-    }
-
-    public Integer getNrOfLines() {
-        return nrOfLines;
-    }
-
-    public void setNrOfLines(Integer nrOfLines) {
-        this.nrOfLines = nrOfLines;
-    }
-
-    public AuthorDTO getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(AuthorDTO author) {
-        this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public List<CommentDTO> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<CommentDTO> commentList) {
-        this.commentList = commentList;
-    }
-
 }

@@ -53,14 +53,13 @@ public class UserDataAdapter {
      */
     private UserDashboardDTO toEntity(Article article) {
         UserDashboardDTO userDto = new UserDashboardDTO();
-        userDto.setUserFullName(article.getAuthor()
-                .getFullName());
-        userDto.setArticleId(article.getId());
-        userDto.setArticleName(article.getTitle());
+        userDto.userFullName = article.getAuthor().getFullName();
+        userDto.articleId = article.getId();
+        userDto.articleTitle = article.getTitle();
 
         List<ArticleReadAction> readActions = article.getArticleReadActions();
-        userDto.setCoinsGainedPerArticle(computeSumOfCoinsPerArticle(readActions));
-        userDto.setCoinsGained(computeSumOfCoins());
+        userDto.coinsGainedPerArticle = computeSumOfCoinsPerArticle(readActions);
+        userDto.coinsGained = computeSumOfCoins();
         // TODO compute/get all needed values for displaying the Author's statistics data
 
         return userDto;

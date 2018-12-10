@@ -59,7 +59,7 @@ public class DataProcessorService {
     private void processArticle(ArticleDTO articleDTO, Boolean isBlackListed) {
         Author author = persistAuthor(articleDTO.author.username, articleDTO.author.fullName);
 
-        Article article = persistArticle(articleDTO.title, articleDTO.url, author, isBlackListed);
+        Article article = persistArticle(articleDTO.title, articleDTO.url, author, isBlackListed, articleDTO.category);
 
         persistComments(articleDTO.commentList, articleDTO.timeSpentInSeconds, article);
 
@@ -98,11 +98,11 @@ public class DataProcessorService {
         articleRepository.save(article);
     }
 
-    private Article persistArticle(String articleTitle, String url, Author author, boolean isBlackListed) {
+    private Article persistArticle(String articleTitle, String url, Author author, boolean isBlackListed, String category) {
         Article article = articleRepository.findByTitle(articleTitle);
 
         if (article == null) {
-            article = new Article(articleTitle, url, author, isBlackListed);
+            article = new Article(articleTitle, url, author, isBlackListed, category);
             articleRepository.save(article);
         }
         return article;

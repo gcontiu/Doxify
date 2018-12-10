@@ -2,6 +2,7 @@ package com.helloworld.data;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,24 +37,30 @@ public class Article {
     @Column(nullable = false)
     private boolean isBlackListed;
 
+    private LocalDateTime timeStamp;
+
+    private String category;
+
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticleReadAction> articleReadActions;
 
-
-    //default constructor needed by JPA and Hibernate
+    // default constructor needed by JPA and Hibernate
     public Article() {
+        timeStamp = LocalDateTime.now();
     }
 
-    public Article(String title, String url, Author author, boolean isBlackListed) {
+    public Article(String title, String url, Author author, boolean isBlackListed, String category) {
         this.title = title;
         this.url = url;
         this.author = author;
         this.isBlackListed = isBlackListed;
+        this.category = category;
         comments = new ArrayList<>();
         articleReadActions = new ArrayList<>();
+        timeStamp = LocalDateTime.now();
     }
 
     public String getTitle() {
@@ -82,6 +89,14 @@ public class Article {
 
     public Long getId() {
         return id;
+    }
+
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public Author getAuthor() {
