@@ -1,24 +1,27 @@
 package com.helloworld.adapter;
 
-import com.helloworld.data.Article;
-import com.helloworld.data.ArticleReadAction;
-import com.helloworld.data.Comment;
-import com.helloworld.data.CommentReadAction;
-import com.helloworld.data.dto.AuthorStatsDTO;
-import com.helloworld.repository.ArticleReadActionRepository;
-import com.helloworld.repository.AuthorRepository;
-import com.helloworld.service.CoinCalculator;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
+import com.helloworld.data.Article;
+import com.helloworld.data.ArticleReadAction;
+import com.helloworld.data.Author;
+import com.helloworld.data.Comment;
+import com.helloworld.data.CommentReadAction;
+import com.helloworld.data.dto.AuthorStatsDTO;
+import com.helloworld.repository.ArticleReadActionRepository;
+import com.helloworld.repository.AuthorRepository;
+import com.helloworld.service.CoinCalculator;
 
 @Service
 public class AuthorStatsAdapter {
@@ -37,74 +40,92 @@ public class AuthorStatsAdapter {
 
     @Cacheable(cacheNames = "authorStats")
     public List<AuthorStatsDTO> getAllAuthorStats() {
-        LOGGER.info("Getting AuthorStats from database...");
-        List<AuthorStatsDTO> authorStatsDTOs = new ArrayList<>();
+        final int[] rank = { 1 };
 
-        authorRepository.findAll().forEach(author -> {
-            String userName = author.getUserName();
-            String fullName = author.getFullName();
-            List<Article> articles = author.getArticles();
-            int nrOfArticles = articles.size();
+        LOGGER.info("Getting AuthorStats from database and calculating rankings...");
+        return StreamSupport.stream(authorRepository.findAll().spliterator(), false)
+                .map(this::getStatsForAuthor)
+                .filter(authorStatsDTO -> authorStatsDTO.totalCoins > 0)
+                .sorted(AuthorStatsDTO::compareTo)
+                .limit(5)
+                .peek(authorStatsDTO -> authorStatsDTO.rank = rank[0]++)
+                .collect(Collectors.toList());
+    }
 
-            double nrOfCoins = articles.stream()
-                    .mapToDouble(article -> {
-                        double sum = article.getArticleReadActions().stream()
-                                .mapToDouble(ArticleReadAction::getNrOfCoins)
-                                .sum();
-                        sum += article.getComments().stream()
-                                .map(Comment::getCommentReadActions)
-                                .mapToDouble(commentReadActionList -> commentReadActionList.stream()
-                                        .mapToDouble(CommentReadAction::getNrOfCoins)
-                                        .sum())
-                                .sum();
-                        return sum;
-                    }).sum();
-            nrOfCoins = coinCalculator.round(nrOfCoins);
+    @Cacheable(cacheNames = "authorStats")
+    public AuthorStatsDTO getStatsForAuthor(Author author) {
 
-            Optional<Article> mostReadArticle = articles.stream()
-                    .reduce((article1, article2) -> {
-                        if (article1.getArticleReadActions().size() > article2.getArticleReadActions().size()) {
-                            return article1;
-                        } else {
-                            return article2;
-                        }
-                    });
-            String mostReadArticleTitle = null;
-            String mostReadArticleUrl = null;
-            if (mostReadArticle.isPresent()) {
-                mostReadArticleTitle = mostReadArticle.get().getTitle();
-                mostReadArticleUrl = mostReadArticle.get().getUrl();
-            }
+        String userName = author.getUserName();
+        String fullName = author.getFullName();
 
-            authorStatsDTOs.add(new AuthorStatsDTO(userName, fullName, nrOfArticles, nrOfCoins, mostReadArticleTitle,
-                    mostReadArticleUrl));
-        });
+        List<Article> articles = author.getArticles()
+                .stream()
+                .filter(article -> !article.isBlackListed())
+                .collect(Collectors.toList());
 
-        LOGGER.info("Calculating Author rankings...");
-        authorStatsDTOs.sort(AuthorStatsDTO::compareTo);
+        int nrOfArticles = articles.size();
 
-        int rank = 1;
-        for (AuthorStatsDTO authorStatsDTO : authorStatsDTOs) {
-            authorStatsDTO.rank = rank++;
+        if (nrOfArticles > 0) {
+            Map<Article, Double> totalCoinsPerArticleReadMap = articles.stream()
+                    .collect(Collectors.toMap(article -> article, article -> article.getArticleReadActions()
+                            .stream()
+                            .mapToDouble(ArticleReadAction::getNrOfCoins)
+                            .sum()));
+
+            Map<Article, Double> totalCoinsPerArticleCommentMap = articles.stream()
+                    .collect(Collectors.toMap(article -> article, article -> article.getComments()
+                            .stream()
+                            .map(Comment::getCommentReadActions)
+                            .mapToDouble(commentReadActions -> commentReadActions.stream()
+                                    .mapToDouble(CommentReadAction::getNrOfCoins)
+                                    .sum())
+                            .sum()));
+
+            double totalArticleReadCoins = totalCoinsPerArticleReadMap.values()
+                    .stream()
+                    .mapToDouble(Double::doubleValue)
+                    .sum();
+
+            double totalArticleCommentsCoins = totalCoinsPerArticleCommentMap.values()
+                    .stream()
+                    .mapToDouble(Double::doubleValue)
+                    .sum();
+
+            double totalCoins = coinCalculator.round(Double.sum(totalArticleReadCoins, totalArticleCommentsCoins));
+
+            Article mostReadArticle = totalCoinsPerArticleReadMap.entrySet()
+                    .stream()
+                    .sorted(Comparator.comparingDouble((ToDoubleFunction<Map.Entry<Article, Double>>) Map.Entry::getValue)
+                            .reversed())
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(new Article());
+
+            String mostReadArticleTitle = mostReadArticle.getTitle();
+            String mostReadArticleUrl = mostReadArticle.getUrl();
+
+            return new AuthorStatsDTO(userName, fullName, nrOfArticles, totalCoins, mostReadArticleTitle, mostReadArticleUrl);
         }
-        return authorStatsDTOs;
+        return new AuthorStatsDTO(userName, fullName, nrOfArticles, 0, null, null);
     }
 
     public Double getAverageTimeSpentOnArticles() {
-        OptionalDouble average = articleReadActionRepository.findAll()
+        double average = articleReadActionRepository.findAll()
                 .stream()
-                .mapToDouble(articleReadAction -> articleReadAction.getSecondsSpent())
-                .average();
+                .mapToDouble(ArticleReadAction::getSecondsSpent)
+                .average()
+                .orElse(0);
 
-        return coinCalculator.round(average.getAsDouble());
-
+        return coinCalculator.round(average);
     }
 
     public Double getTopAchievedCoinForArticle() {
-        Optional<ArticleReadAction> articleReadAction = articleReadActionRepository.findAll()
+        double coins = articleReadActionRepository.findAll()
                 .stream()
-                .max(Comparator.comparing(ArticleReadAction::getNrOfCoins));
+                .max(Comparator.comparing(ArticleReadAction::getNrOfCoins))
+                .map(ArticleReadAction::getNrOfCoins)
+                .orElse(0.0);
 
-        return coinCalculator.round(articleReadAction.get().getNrOfCoins());
+        return coinCalculator.round(coins);
     }
 }
