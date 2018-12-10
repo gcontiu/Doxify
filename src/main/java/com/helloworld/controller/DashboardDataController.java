@@ -11,18 +11,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.helloworld.adapter.AuthorStatsAdapter;
 import com.helloworld.data.dto.AuthorStatsDTO;
+import com.helloworld.service.DataProcessorService;
 
 
 @RestController
-public class StatsController {
+public class DashboardDataController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StatsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardDataController.class);
 
     private final AuthorStatsAdapter authorStatsAdapter;
+    private final DataProcessorService service;
 
     @Autowired
-    public StatsController(AuthorStatsAdapter authorStatsAdapter) {
+    public DashboardDataController(AuthorStatsAdapter authorStatsAdapter, DataProcessorService service) {
         this.authorStatsAdapter = authorStatsAdapter;
+        this.service = service;
     }
 
     @GetMapping("/authorStats")
@@ -30,5 +33,11 @@ public class StatsController {
     List<AuthorStatsDTO> getAllAuthorStats() {
         LOGGER.info("Returning author stats for all authors.");
         return authorStatsAdapter.getAllAuthorStats();
+    }
+
+    @GetMapping("/allAuthors")
+    @ResponseBody
+    public Long countAllAuthors() {
+        return service.countAllAuthors();
     }
 }
