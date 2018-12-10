@@ -25,12 +25,16 @@ public class ArticleReadController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleReadController.class);
 
-    @Autowired
-    private DataProcessorService dataProcessorService;
-    @Autowired
-    private UserDataAdapter userDataAdapter;
+    private final DataProcessorService dataProcessorService;
+    private final UserDataAdapter userDataAdapter;
 
-    @CacheEvict(cacheNames = { "authorStats", "averageTimeOnArticle", "topAchievedCoinsForArticle"}, allEntries = true)
+    @Autowired
+    public ArticleReadController(DataProcessorService dataProcessorService, UserDataAdapter userDataAdapter) {
+        this.dataProcessorService = dataProcessorService;
+        this.userDataAdapter = userDataAdapter;
+    }
+
+    @CacheEvict(cacheNames = { "authorStats", "averageTimeOnArticle", "topAchievedCoinsForArticle", "articleStats" }, allEntries = true)
     @PostMapping("/articleReadAction")
     public void articleReadAction(@RequestBody ArticleDTO articleDTO) {
         LOGGER.info("Article '{}' was red for {} seconds.", articleDTO.title, articleDTO.timeSpentInSeconds);

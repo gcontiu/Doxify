@@ -15,4 +15,6 @@ public interface ArticleRepository extends CrudRepository<Article, String> {
 
     List<Article> findAllByAuthor(Author author);
 
+    List<Article> findAllByCategory(String category);
+
 }
