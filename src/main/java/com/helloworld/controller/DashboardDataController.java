@@ -38,18 +38,21 @@ public class DashboardDataController {
     @GetMapping("/allAuthors")
     @ResponseBody
     public Long countAllAuthors() {
+        LOGGER.info("Returning the number of authors.");
         return service.countAllAuthors();
     }
 
     @GetMapping("/averageTimeOnArticles")
     @ResponseBody
     Double getAverageTimeSpentOnArticles() {
+        LOGGER.info("Returning the average time spent on articles.");
         return authorStatsAdapter.getAverageTimeSpentOnArticles();
     }
 
     @GetMapping("/maxCoinAchievedArticle")
     @ResponseBody
     Double getTopAchievedCoinForArticle() {
+        LOGGER.info("Returning the maximum coin count achieved on an article.");
         return authorStatsAdapter.getTopAchievedCoinForArticle();
     }
 }

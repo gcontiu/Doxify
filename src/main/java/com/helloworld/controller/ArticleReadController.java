@@ -30,12 +30,12 @@ public class ArticleReadController {
     @Autowired
     private UserDataAdapter userDataAdapter;
 
-    @CacheEvict(cacheNames = "authorStats", allEntries = true)
+    @CacheEvict(cacheNames = { "authorStats", "averageTimeOnArticle", "topAchievedCoinsForArticle"}, allEntries = true)
     @PostMapping("/articleReadAction")
     public void articleReadAction(@RequestBody ArticleDTO articleDTO) {
         LOGGER.info("Article '{}' was red for {} seconds.", articleDTO.title, articleDTO.timeSpentInSeconds);
         dataProcessorService.processArticleDetails(articleDTO);
-        LOGGER.info("Invalidated AuthorStatsCache.");
+        LOGGER.info("Invalidated Caches for authorStats, averageTimeOnArticle and topAchievedCoinsForArticle.");
     }
 
     @PostMapping("/blackListedArticle")

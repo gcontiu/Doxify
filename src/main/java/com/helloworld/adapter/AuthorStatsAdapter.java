@@ -40,9 +40,9 @@ public class AuthorStatsAdapter {
 
     @Cacheable(cacheNames = "authorStats")
     public List<AuthorStatsDTO> getAllAuthorStats() {
-        final int[] rank = { 1 };
+        LOGGER.info("Getting all AuthorStats from database and calculating rankings...");
 
-        LOGGER.info("Getting AuthorStats from database and calculating rankings...");
+        final int[] rank = { 1 };
         return StreamSupport.stream(authorRepository.findAll().spliterator(), false)
                 .map(this::getStatsForAuthor)
                 .filter(authorStatsDTO -> authorStatsDTO.totalCoins > 0)
@@ -54,6 +54,7 @@ public class AuthorStatsAdapter {
 
     @Cacheable(cacheNames = "authorStats")
     public AuthorStatsDTO getStatsForAuthor(Author author) {
+        LOGGER.info("Calculating AuthorStats for '{}'...", author.getUserName());
 
         String userName = author.getUserName();
         String fullName = author.getFullName();
@@ -109,7 +110,10 @@ public class AuthorStatsAdapter {
         return new AuthorStatsDTO(userName, fullName, nrOfArticles, 0, null, null);
     }
 
+    @Cacheable(cacheNames = "averageTimeOnArticle")
     public Double getAverageTimeSpentOnArticles() {
+        LOGGER.info("Calculating the average time spent on articles...");
+
         double average = articleReadActionRepository.findAll()
                 .stream()
                 .mapToDouble(ArticleReadAction::getSecondsSpent)
@@ -119,7 +123,10 @@ public class AuthorStatsAdapter {
         return coinCalculator.round(average);
     }
 
+    @Cacheable(cacheNames = "topAchievedCoinsForArticle")
     public Double getTopAchievedCoinForArticle() {
+        LOGGER.info("Calculating the max coins achieved for an article...");
+
         double coins = articleReadActionRepository.findAll()
                 .stream()
                 .max(Comparator.comparing(ArticleReadAction::getNrOfCoins))
