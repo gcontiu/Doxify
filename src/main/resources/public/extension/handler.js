@@ -37,10 +37,13 @@ function callAjax(url, data){
     TimeMe.stopTimer("my-activity");
     var timeOnActivity = TimeMe.getTimeOnPageInSeconds("my-activity");
     data ["timeSpentInSeconds"] = timeOnActivity;
-    var xmlHttp= new XMLHttpRequest();
-    xmlHttp.open("POST", url, true);
-    xmlHttp.setRequestHeader("Content-type", "application/json");
-    xmlHttp.send(JSON.stringify(data));
+	//spent at least 5 seconds
+	if (timeOnActivity > 5) {
+		var xmlHttp= new XMLHttpRequest();
+		xmlHttp.open("POST", url, true);
+		xmlHttp.setRequestHeader("Content-type", "application/json");
+		xmlHttp.send(JSON.stringify(data));
+	}
 }
 
 function validateContent(content) {
