@@ -10,7 +10,7 @@ TimeMe.initialize({
 TimeMe.startTimer("my-activity");
 
 var data = new Object();
-var blackListedArticles = ["*scrum of scrum*", "*tech alignment*"];
+var blackListedArticles = [".*scrum of scrum.*", ".*tech alignment.*"];
 
 
 // this is fired for closing the tab or window
@@ -51,10 +51,13 @@ function validateContent(content) {
     var lowerCaseTitle = title.toLowerCase();
     var pageContent = content.getElementsByClassName("entry-content")[0].textContent;
     data["title"] = title;
+    data["category"] = "";
     analyzeContent(pageContent);
-    for(var blackListedElement in blackListedArticles){
-        var regex = new RegExp(blackListedElement);
+    for(var i = 0; i < blackListedArticles.length; i++) {
+        var categoryRegex = blackListedArticles[i];
+        var regex = new RegExp(categoryRegex);
         if(regex.test(lowerCaseTitle)){
+            data["category"] = categoryRegex.substring(2, categoryRegex.length - 2);
             return false;
         }
     }
