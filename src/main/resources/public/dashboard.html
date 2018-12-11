@@ -12,7 +12,10 @@
 
     <title>Statistics</title>
 </head>
-<body style="background-color: #eee;" onload="populateAuthorRankTable();">
+<body style="background-color: #eee;"
+      onload="populateAuthorRankTable();
+      populateOtherArticlesTable('scrum of scrum');
+      populateOtherArticlesTable('tech alignment');">
 
 <main role="main" class="container justify-content-center">
     <!-- Carousel -->
@@ -128,13 +131,7 @@
                         <th scope="col">Read Times</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td><a href="https://weblog.endava.com/worldpay/2018/11/09/scrum-of-scrums-12112018/">Scrum of
-                            Scrums 12/11/2018</a></td>
-                        <td>5</td>
-                    </tr>
+                    <tbody id="scrum of scrumArticlesTableBody">
                     </tbody>
                 </table>
             </div>
@@ -152,13 +149,7 @@
                         <th scope="col">Read Times</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td><a href="https://weblog.endava.com/worldpay/2018/11/02/weekly-tech-alignment-02-11-2018/">Weekly
-                            Tech Alignment 02.11.2018</a></td>
-                        <td>8</td>
-                    </tr>
+                    <tbody id="tech alignmentArticlesTableBody">
                     </tbody>
                 </table>
             </div>

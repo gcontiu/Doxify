@@ -50,6 +50,42 @@ function populateAuthorRankTable() {
     }
 }
 
+function populateOtherArticlesTable(param) {
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", "http://localhost:8585/articleStats?category=" + param, true);
+    ajax.send();
+
+    ajax.onload = function () {
+        var response = JSON.parse(this.response);
+        if (ajax.status === 200) {
+            for (var i = 0; i < response.length; i++) {
+
+                var tableBody = document.getElementById(param + "ArticlesTableBody");
+                var row = document.createElement("tr");
+                var rowHeader = document.createElement("th");
+                var readTimesCell = document.createElement("td");
+                var articleCell = document.createElement("td");
+                var articleURL = document.createElement("a");
+
+                var rank = document.createTextNode(response[i]["rank"]);
+                var readTimes = document.createTextNode(response[i]["timesRead"]);
+                var articleName = document.createTextNode(response[i]["articleTitle"]);
+
+                articleURL.setAttribute("href", response[i]["articleUrl"]);
+                articleURL.appendChild(articleName);
+
+                articleCell.appendChild(articleURL);
+                readTimesCell.appendChild(readTimes);
+                rowHeader.appendChild(rank);
+                row.appendChild(rowHeader);
+                row.appendChild(articleCell);
+                row.appendChild(readTimesCell);
+                tableBody.appendChild(row);
+            }
+        }
+    }
+}
+
 
 function getAllByParam(elementId, userFullNameId, coinsGainedId, param) {
     var ajax = new XMLHttpRequest();
