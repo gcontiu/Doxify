@@ -1,19 +1,19 @@
 package com.helloworld.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.helloworld.data.Article;
 import com.helloworld.data.ArticleReadAction;
 import com.helloworld.data.Author;
 import com.helloworld.data.dto.UserDashboardDTO;
 import com.helloworld.repository.ArticleRepository;
 import com.helloworld.repository.AuthorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Adapter class which maps the Author's data from Database to an {@code UserDashboardDTO}, in order to display it's data into User's
@@ -47,7 +47,7 @@ public class UserDataAdapter {
 
     /**
      * Map all data needed for an Author's statistics page
-     * 
+     *
      * @param article
      * @return
      */
@@ -59,7 +59,7 @@ public class UserDataAdapter {
 
         List<ArticleReadAction> readActions = article.getArticleReadActions();
         userDto.coinsGainedPerArticle = computeSumOfCoinsPerArticle(readActions);
-        userDto.coinsGained = computeSumOfCoins();
+        userDto.coinsGained = computeSumOfCoins(article.getAuthor());
         // TODO compute/get all needed values for displaying the Author's statistics data
 
         return userDto;
@@ -67,7 +67,7 @@ public class UserDataAdapter {
 
     /**
      * Compute the cum of coins per Article
-     * 
+     *
      * @param readActions
      * @return
      */
@@ -80,14 +80,30 @@ public class UserDataAdapter {
     }
 
     /**
-     * 
      * Compute the total number of coins gained by an Author
-     * 
-     * @return
+     *
+     * @param author contributor for which the coins are computed
+     * @return total number of coins gained by an Author
      */
-    private Double computeSumOfCoins() {
-        // TODO add logic to compute the total amount of coins per Author
-        return 0d;
+    private Double computeSumOfCoins(Author author) {
+        List<Article> articles = author.getArticles()
+                .stream()
+                .filter(article -> !article.isBlackListed())
+                .collect(Collectors.toList());
+        Double sum = 0d;
+
+        if (!articles.isEmpty()) {
+            for (Article article : articles) {
+                List<ArticleReadAction> readActions = article.getArticleReadActions();
+
+                for (ArticleReadAction action : readActions) {
+                    Double noOfCoins = action.getNrOfCoins();
+                    sum += noOfCoins;
+                }
+            }
+            LOGGER.info("Author '{}' gained a total of '{}' coins.", author.getFullName(), sum);
+        }
+        return sum;
     }
 
 }
