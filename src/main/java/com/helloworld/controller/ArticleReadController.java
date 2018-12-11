@@ -39,13 +39,15 @@ public class ArticleReadController {
     public void articleReadAction(@RequestBody ArticleDTO articleDTO) {
         LOGGER.info("Article '{}' was red for {} seconds.", articleDTO.title, articleDTO.timeSpentInSeconds);
         dataProcessorService.processArticleDetails(articleDTO);
-        LOGGER.info("Invalidated Caches for authorStats, averageTimeOnArticle and topAchievedCoinsForArticle.");
+        LOGGER.info("Invalidated Caches for authorStats, averageTimeOnArticle, topAchievedCoinsForArticle, and articleStats.");
     }
 
+    @CacheEvict(cacheNames = { "authorStats", "averageTimeOnArticle", "topAchievedCoinsForArticle", "articleStats" }, allEntries = true)
     @PostMapping("/blackListedArticle")
     public void readBlackListedArticle(@RequestBody ArticleDTO articleDTO) {
         LOGGER.info("Article '{}' was detected as blacklisted.", articleDTO.title);
         dataProcessorService.processBlackListedArticle(articleDTO);
+        LOGGER.info("Invalidated Caches for authorStats, averageTimeOnArticle, topAchievedCoinsForArticle, and articleStats.");
     }
 
     @GetMapping("/allArticles")

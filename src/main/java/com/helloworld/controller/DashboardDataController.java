@@ -66,11 +66,14 @@ public class DashboardDataController {
     List<ArticleStatsDTO> getAllArticleStatsByUsernameOrCategory(@RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "category", required = false) String category) {
         if (category != null && !category.isEmpty()) {
+            LOGGER.info("Returning all article stats for category '{}'.", category);
             return articleStatsAdapter.getAllArticleStatsByCategory(category);
         }
         if (username != null && !username.isEmpty()) {
+            LOGGER.info("Returning all article stats for author with username '{}'.", username);
             return articleStatsAdapter.getAllArticleStatsByUsername(username);
         }
+        LOGGER.info("Invalid article stats request, returning empty list.");
         return new ArrayList<>();
     }
 }
