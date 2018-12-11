@@ -6,6 +6,7 @@ import com.helloworld.data.Author;
 import com.helloworld.data.dto.UserDashboardDTO;
 import com.helloworld.repository.ArticleRepository;
 import com.helloworld.repository.AuthorRepository;
+import com.helloworld.service.CoinCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,13 @@ public class UserDataAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDataAdapter.class);
     private final AuthorRepository authorRepository;
     private final ArticleRepository articleRepository;
+    private final CoinCalculator coinCalculator;
 
     @Autowired
-    public UserDataAdapter(AuthorRepository authorRepository, ArticleRepository articleRepository) {
+    public UserDataAdapter(AuthorRepository authorRepository, ArticleRepository articleRepository, CoinCalculator coinCalculator) {
         this.authorRepository = authorRepository;
         this.articleRepository = articleRepository;
+        this.coinCalculator = coinCalculator;
     }
 
     public List<UserDashboardDTO> getAllArticles(String username) {
@@ -59,14 +62,14 @@ public class UserDataAdapter {
 
         List<ArticleReadAction> readActions = article.getArticleReadActions();
         userDto.coinsGainedPerArticle = computeSumOfCoinsPerArticle(readActions);
-        userDto.coinsGained = computeSumOfCoins(article.getAuthor());
+        userDto.coinsGained = coinCalculator.round(computeSumOfCoins(article.getAuthor()));
         // TODO compute/get all needed values for displaying the Author's statistics data
 
         return userDto;
     }
 
     /**
-     * Compute the cum of coins per Article
+     * Compute the sum of coins per Article
      *
      * @param readActions
      * @return
