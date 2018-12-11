@@ -63,9 +63,7 @@ public class DataProcessorService {
 
         persistComments(articleDTO.commentList, articleDTO.timeSpentInSeconds, article);
 
-        if (!isBlackListed) {
-            persistArticleReadAction(articleDTO.nrOfLines, articleDTO.timeSpentInSeconds, article);
-        }
+        persistArticleReadAction(articleDTO.nrOfLines, articleDTO.timeSpentInSeconds, article, isBlackListed);
     }
 
     private void persistComments(List<CommentDTO> comments, Double spentTime, Article article) {
@@ -87,10 +85,15 @@ public class DataProcessorService {
         }
     }
 
-    private void persistArticleReadAction(Integer nrOfLines, Double spentTime, Article article) {
+    private void persistArticleReadAction(Integer nrOfLines, Double spentTime, Article article, boolean isBlacklisted) {
         ArticleReadAction articleReadAction = new ArticleReadAction(article, LocalDateTime.now());
 
-        Double nrOfCoins = coinCalculator.calculateNrOfCoinsForArticle(nrOfLines, spentTime);
+        Double nrOfCoins;
+        if(isBlacklisted) {
+            nrOfCoins = 0.0;
+        } else {
+            nrOfCoins = coinCalculator.calculateNrOfCoinsForArticle(nrOfLines, spentTime);
+        }
 
         articleReadAction.setNrOfCoins(nrOfCoins);
         articleReadAction.setSecondsSpent(spentTime);

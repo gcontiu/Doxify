@@ -1,18 +1,21 @@
 package com.helloworld.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.helloworld.adapter.ArticleStatsAdapter;
 import com.helloworld.adapter.AuthorStatsAdapter;
+import com.helloworld.data.dto.ArticleStatsDTO;
 import com.helloworld.data.dto.AuthorStatsDTO;
 import com.helloworld.service.DataProcessorService;
-
 
 @RestController
 public class DashboardDataController {
@@ -20,12 +23,14 @@ public class DashboardDataController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardDataController.class);
 
     private final AuthorStatsAdapter authorStatsAdapter;
+    private final ArticleStatsAdapter articleStatsAdapter;
     private final DataProcessorService service;
 
     @Autowired
-    public DashboardDataController(AuthorStatsAdapter authorStatsAdapter, DataProcessorService service) {
+    public DashboardDataController(AuthorStatsAdapter authorStatsAdapter, DataProcessorService service, ArticleStatsAdapter articleStatsAdapter) {
         this.authorStatsAdapter = authorStatsAdapter;
         this.service = service;
+        this.articleStatsAdapter = articleStatsAdapter;
     }
 
     @GetMapping("/authorStats")
@@ -54,5 +59,18 @@ public class DashboardDataController {
     Double getTopAchievedCoinForArticle() {
         LOGGER.info("Returning the maximum coin count achieved on an article.");
         return authorStatsAdapter.getTopAchievedCoinForArticle();
+    }
+
+    @GetMapping("/articleStats")
+    @ResponseBody
+    List<ArticleStatsDTO> getAllArticleStatsByUsernameOrCategory(@RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "category", required = false) String category) {
+        if (category != null && !category.isEmpty()) {
+            return articleStatsAdapter.getAllArticleStatsByCategory(category);
+        }
+        if (username != null && !username.isEmpty()) {
+            return articleStatsAdapter.getAllArticleStatsByUsername(username);
+        }
+        return new ArrayList<>();
     }
 }

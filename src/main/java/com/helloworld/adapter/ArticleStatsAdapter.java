@@ -73,6 +73,7 @@ public class ArticleStatsAdapter {
         articleStatsDTO.totalCoins = article.getArticleReadActions().stream()
                 .mapToDouble(ArticleReadAction::getNrOfCoins)
                 .sum();
+        articleStatsDTO.timestamp = article.getTimeStamp();
 
         return articleStatsDTO;
     }
