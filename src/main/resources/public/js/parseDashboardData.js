@@ -50,9 +50,9 @@ function populateAuthorRankTable() {
     }
 }
 
-function populateOtherArticlesTable(param) {
+function populateOtherArticlesTable(category) {
     var ajax = new XMLHttpRequest();
-    ajax.open("GET", "http://localhost:8585/articleStats?category=" + param, true);
+    ajax.open("GET", "http://localhost:8585/articleStats?category=" + category, true);
     ajax.send();
 
     ajax.onload = function () {
@@ -60,7 +60,7 @@ function populateOtherArticlesTable(param) {
         if (ajax.status === 200) {
             for (var i = 0; i < response.length; i++) {
 
-                var tableBody = document.getElementById(param + "ArticlesTableBody");
+                var tableBody = document.getElementById(category + "ArticlesTableBody");
                 var row = document.createElement("tr");
                 var rowHeader = document.createElement("th");
                 var readTimesCell = document.createElement("td");
@@ -96,7 +96,6 @@ function getAllByParam(elementId, userFullNameId, coinsGainedId, param) {
             var response = JSON.parse(ajax.response);
 
             for (var i in response) {
-                console.log(response[i].userFullName);
 
                 // TODO map elements by ID into User's Statistics Page; You can use other type of mapping if useful
                 document.getElementById(userFullNameId).innerHTML = 'Hello, ' + response[i].userFullName + '!';

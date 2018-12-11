@@ -103,3 +103,47 @@ function doToggle() {
         doXAxisWithDays();
     }
 }
+
+function populateUserArticlesTable(username) {
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", "http://localhost:8585/articleStats?username=" + username, true);
+    ajax.send();
+
+    ajax.onload = function () {
+        var response = JSON.parse(this.response);
+        if (ajax.status === 200) {
+            for (var i = 0; i < response.length; i++) {
+
+                var tableBody = document.getElementById("userArticleRankingTableBody");
+                var row = document.createElement("tr");
+                var rowHeader = document.createElement("th");
+                var timeSpentCell = document.createElement("td");
+                var noOfLinesCell = document.createElement("td");
+                var totalCoinsCell = document.createElement("td");
+                var articleCell = document.createElement("td");
+                var articleURL = document.createElement("a");
+
+                var rank = document.createTextNode(response[i]["rank"]);
+                var timeSpent = document.createTextNode(response[i]["averageTimeSpent"]);
+                var noOfLines = document.createTextNode(response[i]["nrOfLines"]);
+                var totalCoins = document.createTextNode(response[i]["totalCoins"]);
+                var articleName = document.createTextNode(response[i]["articleTitle"]);
+
+                articleURL.setAttribute("href", response[i]["articleUrl"]);
+                articleURL.appendChild(articleName);
+
+                articleCell.appendChild(articleURL);
+                timeSpentCell.appendChild(timeSpent);
+                noOfLinesCell.appendChild(noOfLines);
+                totalCoinsCell.appendChild(totalCoins);
+                rowHeader.appendChild(rank);
+                row.appendChild(rowHeader);
+                row.appendChild(articleCell);
+                row.appendChild(timeSpentCell);
+                row.appendChild(noOfLinesCell);
+                row.appendChild(totalCoinsCell);
+                tableBody.appendChild(row);
+            }
+        }
+    }
+}

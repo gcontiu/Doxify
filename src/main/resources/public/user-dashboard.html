@@ -15,7 +15,9 @@
 
     <title>User Dashboard</title>
 </head>
-<body style="background-color: #eee;">
+<body style="background-color: #eee;" onload="
+    getAllByParam('allArticlesForAuthor', 'userFullNameId', 'coinsGainedId', getUsername());
+    populateUserArticlesTable(getUsername());">
 
 <main role="main" class="container justify-content-center" id="allArticlesForAuthor">
     <!-- Best of Coins -->
@@ -50,41 +52,7 @@
             <th scope="col">Coins gained</th>
         </tr>
         </thead>
-        <tbody>
-        <tr class="table-info">
-            <th scope="row">1</th>
-            <td><a href="https://weblog.endava.com/worldpay/2018/09/20/futurepay-overview/">FUTUREPAY OVERVIEW</a>
-            <td>15 m</td>
-            <td>50</td>
-            <td>10</td>
-        </tr>
-        <tr class="table-info">
-            <th scope="row">2</th>
-            <td>
-                <a href="https://weblog.endava.com/worldpay/2018/10/08/wpg-ims-codebase-structure-and-best-practices/">WPG
-                    – IMS CODEBASE STRUCTURE AND BEST PRACTICES</a>
-            </td>
-            <td>5 m</td>
-            <td>150</td>
-            <td>50</td>
-        </tr>
-        <tr class="table-info">
-            <th scope="row">3</th>
-            <td><a href="https://weblog.endava.com/worldpay/2017/07/25/splunk-jnwatch-overview/">SPLUNK & JNWATCH
-                OVERVIEW</a>
-            </td>
-            <td>8 m</td>
-            <td>80</td>
-            <td>15</td>
-        </tr>
-        <tr>
-            <th scope="row">4</th>
-            <td><a href="https://weblog.endava.com/worldpay/2017/01/27/splunk-changes/">SPLUNK CHANGES STEPS</a>
-            </td>
-            <td>8 m</td>
-            <td>80</td>
-            <td>15</td>
-        </tr>
+        <tbody id="userArticleRankingTableBody">
         </tbody>
     </table>
 
@@ -101,7 +69,6 @@
            id="toggleBtn">
     <hr>
 </main>
-<script>getAllByParam('allArticlesForAuthor', 'userFullNameId', 'coinsGainedId', getUsername())</script>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
