@@ -63,7 +63,7 @@ public class UserDataAdapter {
         List<ArticleReadAction> readActions = article.getArticleReadActions();
         userDto.coinsGainedPerArticle = computeSumOfCoinsPerArticle(readActions);
         userDto.coinsGained = coinCalculator.round(computeSumOfCoins(article.getAuthor()));
-        // TODO compute/get all needed values for displaying the Author's statistics data
+        userDto.totalNumberOfArticles = article.getAuthor().getArticles().size();
 
         return userDto;
     }

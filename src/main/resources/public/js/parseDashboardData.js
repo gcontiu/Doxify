@@ -87,7 +87,7 @@ function populateOtherArticlesTable(category) {
 }
 
 
-function getAllByParam(elementId, userFullNameId, coinsGainedId, param) {
+function getAllByParam(elementId, userFullNameId, coinsGainedId, nrOfArticlesId, param) {
     var ajax = new XMLHttpRequest();
     var requestParam = "?username=" + param;
     ajax.onload = function () {
@@ -100,6 +100,7 @@ function getAllByParam(elementId, userFullNameId, coinsGainedId, param) {
                 // TODO map elements by ID into User's Statistics Page; You can use other type of mapping if useful
                 document.getElementById(userFullNameId).innerHTML = 'Hello, ' + response[i].userFullName + '!';
                 document.getElementById(coinsGainedId).innerHTML = response[i].coinsGained;
+                document.getElementById(nrOfArticlesId).innerText = response[i].totalNumberOfArticles;
             }
         }
     };

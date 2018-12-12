@@ -16,7 +16,7 @@
     <title>User Dashboard</title>
 </head>
 <body style="background-color: #eee;" onload="
-    getAllByParam('allArticlesForAuthor', 'userFullNameId', 'coinsGainedId', getUsername());
+    getAllByParam('allArticlesForAuthor', 'userFullNameId', 'coinsGainedId' ,'nrOfArticlesId', getUsername());
     populateUserArticlesTable(getUsername());">
 
 <main role="main" class="container justify-content-center" id="allArticlesForAuthor">
@@ -30,8 +30,10 @@
         </div>
         <div class="card-body">
             <blockquote class="blockquote mb-0">
-                <p class="card-text">Coins gained: <span class="badge badge-pill badge-danger" id="coinsGainedId"></span>&emsp;Total
-                    number of articles: <span class="badge badge-pill badge-primary">20</span></p>
+                <p class="card-text">
+                    Coins gained: <span class="badge badge-pill badge-danger" id="coinsGainedId"></span>
+                    Total number of articles: <span class="badge badge-pill badge-primary" id="nrOfArticlesId">20</span>
+                </p>
             </blockquote>
         </div>
     </div>
