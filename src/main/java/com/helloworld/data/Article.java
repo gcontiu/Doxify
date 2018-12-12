@@ -41,6 +41,8 @@ public class Article {
 
     private String category;
 
+    private int nrOfLines;
+
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
@@ -52,12 +54,13 @@ public class Article {
         timeStamp = LocalDateTime.now();
     }
 
-    public Article(String title, String url, Author author, boolean isBlackListed, String category) {
+    public Article(String title, String url, Author author, boolean isBlackListed, String category, int nrOfLines) {
         this.title = title;
         this.url = url;
         this.author = author;
         this.isBlackListed = isBlackListed;
         this.category = category;
+        this.nrOfLines = nrOfLines;
         comments = new ArrayList<>();
         articleReadActions = new ArrayList<>();
         timeStamp = LocalDateTime.now();
@@ -97,6 +100,10 @@ public class Article {
 
     public String getCategory() {
         return category;
+    }
+
+    public int getNrOfLines() {
+        return nrOfLines;
     }
 
     public Author getAuthor() {
