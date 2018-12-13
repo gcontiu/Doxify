@@ -15,7 +15,7 @@ public class ArticleStatsDTO implements Comparable {
     @Override
     public int compareTo(Object o) {
         if (o instanceof ArticleStatsDTO) {
-            int compare = Double.compare(this.totalCoins, ((ArticleStatsDTO) o).totalCoins);
+            int compare = -Double.compare(this.totalCoins, ((ArticleStatsDTO) o).totalCoins);
             if (compare == 0) {
                 return this.timestamp.compareTo(((ArticleStatsDTO) o).timestamp);
             } else {
